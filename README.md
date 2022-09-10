@@ -1,5 +1,5 @@
 # CSSugar
-A CSS library for Rust, focusing on ergnomic abstractions.
+A CSS values and units library for Rust, focusing on ergnomic abstractions.
 
 # Goal
 The goal is to wrap all CSS values and units in an ergonomic, rusty way.
