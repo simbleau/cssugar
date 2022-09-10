@@ -11,7 +11,7 @@ This is primarily for ecosystem tooling built around Yew and Stylist.
 # Examples
 
 ## Numbers, lengths, and percentages
-**Read more**: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numbers_lengths_and_percentages
+[Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numbers_lengths_and_percentages)
 ```rs
 use cssugar::units::Em;
 
@@ -32,18 +32,18 @@ Expectated Output:
 > `<button style="text-size: calc!(1.0em * 2.7)">CLICK ME!</button>`
 
 ## Colors
-**Read more**: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#color
+[Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#color)
 TODO
 
 ## Images
-**Read more**: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#images
+[Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#images)
 TODO
 
 ## Strings and Identifiers
-**Read more**: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#strings_and_identifiers
+[Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#strings_and_identifiers)
 TODO
 
 
 ## Functions
-**Read more**: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#functions
+[Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#functions)
 TODO
