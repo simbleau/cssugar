@@ -7,12 +7,42 @@ pub struct Color {
 }
 
 impl Color {
-    pub const fn new(r: u8, g: u8, b: u8, a: f32) -> Color {
+    pub const fn rgb(r: u8, g: u8, b: u8) -> Color {
+        Color { r, g, b, a: 1.0 }
+    }
+
+    pub const fn rgba(r: u8, g: u8, b: u8, a: f32) -> Color {
         Color { r, g, b, a }
     }
 
-    pub const fn opaque(r: u8, g: u8, b: u8) -> Color {
-        Color { r, g, b, a: 1.0 }
+    pub fn hsl(h: i32, s: f32, l: f32) -> Color {
+        let c = (1.0 - (2.0 * l - 1.0).abs()) * s;
+        let x = c * (1 - ((h / 60) % 2 - 1).abs()) as f32;
+        let m = l - c / 2.0;
+        let (r_prime, g_prime, b_prime) = if h < 60 {
+            (c, x, 0.0)
+        } else if h < 120 {
+            (x, c, 0.0)
+        } else if h < 180 {
+            (0.0, c, x)
+        } else if h < 240 {
+            (0.0, x, c)
+        } else if h < 300 {
+            (x, 0.0, c)
+        } else {
+            (c, 0.0, x)
+        };
+        let (r, g, b) = (
+            (r_prime + m) * 255.0,
+            (g_prime + m) * 255.0,
+            (b_prime + m) * 255.0,
+        );
+        Color {
+            r: r as u8,
+            g: g as u8,
+            b: b as u8,
+            a: 1.0,
+        }
     }
 
     /// Lighten the color by a percentage. 1.0 will always result in white, 0.0
@@ -54,25 +84,22 @@ mod tests {
     use crate::colors::*;
 
     #[test]
-    fn test_opaque() {
-        let color = Color::opaque(1, 2, 3);
-        assert_eq!(color.r, 1);
-        assert_eq!(color.g, 2);
-        assert_eq!(color.b, 3);
-    }
-
-    #[test]
-    fn test_new() {
-        let color = Color::new(1, 2, 3, 0.5);
-        assert_eq!(color.r, 1);
-        assert_eq!(color.g, 2);
-        assert_eq!(color.b, 3);
-        assert_eq!(color.a, 0.5);
-    }
-
-    #[test]
     fn test_display() {
-        let color = Color::new(100, 200, 255, 0.5);
+        let color = Color::rgba(100, 200, 255, 0.5);
         assert_eq!(format!("{}", color), format!("rgba(100, 200, 255, 0.5)"));
+    }
+
+    #[test]
+    fn test_hsl() {
+        assert_eq!(Color::hsl(0, 0.0, 0.0), BLACK);
+        assert_eq!(Color::hsl(0, 0.0, 1.0), WHITE);
+
+        assert_eq!(Color::hsl(0, 1.0, 0.5), RED);
+        assert_eq!(Color::hsl(120, 1.0, 0.5), GREEN);
+        assert_eq!(Color::hsl(240, 1.0, 0.5), BLUE);
+
+        assert_eq!(Color::hsl(60, 1.0, 0.5), YELLOW);
+        assert_eq!(Color::hsl(180, 1.0, 0.5), CYAN);
+        assert_eq!(Color::hsl(300, 1.0, 0.5), MAGENTA);
     }
 }
