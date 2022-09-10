@@ -14,13 +14,10 @@ Read more:
 ```rs
 use cssugar::units::Em;
 
-#[derive(Properties, PartialEq)]
-pub struct Props { scale: f32 }
-
 #[function_component(SizedButton)]
-pub fn sized_button(props: &Props) -> Html {
-    let font_size = Em(1.0) * &props.scale;
-    let button_css = css!("text-size: ${font_size}");
+pub fn sized_button() -> Html {
+    let size = Vw(100) - Px(300);
+    let button_css = css!("width: ${size};");
     html! {
         <button class={button_css}>{ "CLICK ME!" }</button>
     }
@@ -28,7 +25,7 @@ pub fn sized_button(props: &Props) -> Html {
 ```
 
 Expectated Output:
-> `<button style="text-size: calc!(1.0em * 2.7)">CLICK ME!</button>`
+> `<button style="width: calc(100vw - 300px);">CLICK ME!</button>`
 
 ## Colors
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#color)
@@ -38,7 +35,7 @@ use cssugar::colors::{Color, BLACK};
 #[function_component(SizedButton)]
 pub fn sized_button() -> Html {
     let color = Color::rgb(255, 0, 0).blend(BLACK);
-    let label_css = css!("color: ${color}");
+    let label_css = css!("color: ${color};");
     html! {
         <label class={label_css}>{ "I am dark red!" }</label>
     }
