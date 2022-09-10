@@ -24,7 +24,7 @@ pub fn sized_button() -> Html {
 }
 ```
 
-Expectated Output:
+Expected Output:
 > `<button style="width: calc(100vw - 300px);">CLICK ME!</button>`
 
 ## Colors
@@ -41,6 +41,8 @@ pub fn sized_button() -> Html {
     }
 }
 ```
+Expected Output:
+> `<label style="color: rgba(128, 0, 0, 1.0);">I am dark red!</label>`
 
 ## Images
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#images)
