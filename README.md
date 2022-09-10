@@ -22,7 +22,7 @@ pub fn sized_button(props: &Props) -> Html {
     let font_size = Em(1.0) * &props.scale;
     let button_css = css!("text-size: ${font_size}");
     html! {
-        <button class={style}>{ "CLICK ME!" }</button>
+        <button class={button_css}>{ "CLICK ME!" }</button>
     }
 }
 ```
