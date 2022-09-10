@@ -12,7 +12,7 @@ Read more:
 ## Numbers, lengths, and percentages
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numbers_lengths_and_percentages)
 ```rs
-use cssugar::units::Em;
+use cssugar::units::{Px, Vw};
 
 #[function_component(SizedButton)]
 pub fn sized_button() -> Html {
