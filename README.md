@@ -32,7 +32,18 @@ Expectated Output:
 
 ## Colors
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#color)
-TODO
+```rs
+use cssugar::colors::{Color, BLACK};
+
+#[function_component(SizedButton)]
+pub fn sized_button() -> Html {
+    let color = Color::rgb(255, 0, 0).blend(BLACK);
+    let label_css = css!("color: ${color}");
+    html! {
+        <label class={label_css}>{ "I am dark red!" }</label>
+    }
+}
+```
 
 ## Images
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#images)
