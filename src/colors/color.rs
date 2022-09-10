@@ -8,7 +8,7 @@ pub struct Color {
 
 impl Color {
     pub const fn rgb(r: u8, g: u8, b: u8) -> Color {
-        Color { r, g, b, a: 1.0 }
+        Self::rgba(r, g, b, 1.0)
     }
 
     pub const fn rgba(r: u8, g: u8, b: u8, a: f32) -> Color {
@@ -16,6 +16,10 @@ impl Color {
     }
 
     pub fn hsl(h: i32, s: f32, l: f32) -> Color {
+        Self::hsla(h, s, l, 1.0)
+    }
+
+    pub fn hsla(h: i32, s: f32, l: f32, a: f32) -> Color {
         let c = (1.0 - (2.0 * l - 1.0).abs()) * s;
         let x = c * (1 - ((h / 60) % 2 - 1).abs()) as f32;
         let m = l - c / 2.0;
@@ -41,7 +45,7 @@ impl Color {
             r: r as u8,
             g: g as u8,
             b: b as u8,
-            a: 1.0,
+            a,
         }
     }
 
