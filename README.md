@@ -2,11 +2,10 @@
 A CSS values and units library for Rust, focusing on ergnomic abstractions.
 
 # Goal
-The goal is to wrap all CSS values and units in an ergonomic, rusty way.
+The goal is to wrap all CSS values and units in an ergonomic, rusty way. This is primarily for ecosystem tooling built around Yew and Stylist.
+
 Read more:
 - https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units
-
-This is primarily for ecosystem tooling built around Yew and Stylist.
 
 # Examples
 
