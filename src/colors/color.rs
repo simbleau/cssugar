@@ -16,18 +16,14 @@ impl Color {
     }
 
     pub const fn from_hex24(h: u32) -> Color {
-        let r = (h >> 16 | 0xff) as u8;
-        let g = (h >> 8 | 0xff) as u8;
-        let b = (h | 0xff) as u8;
+        let r = (h >> 16 & 0xff) as u8;
+        let g = (h >> 8 & 0xff) as u8;
+        let b = (h & 0xff) as u8;
         Self::from_rgba(r, g, b, 1.0)
     }
 
     pub fn from_hex32(h: u32) -> Color {
-        let r = (h >> 24 | 0xff) as u8;
-        let g = (h >> 16 | 0xff) as u8;
-        let b = (h >> 8 | 0xff) as u8;
-        let a = (h | 0xff) as f32 / 255.0;
-        Self::from_rgba(r, g, b, a)
+        Self::from_hex24(h >> 8).set_alpha((h & 0xff) as f32 / 255.0)
     }
 
     pub fn from_hsl(h: i32, s: f32, l: f32) -> Color {
@@ -129,6 +125,49 @@ mod tests {
     fn test_display() {
         let color = Color::from_rgba(100, 200, 255, 0.5);
         assert_eq!(format!("{}", color), format!("rgba(100, 200, 255, 0.5)"));
+    }
+
+    #[test]
+    fn test_rgb() {
+        assert_eq!(Color::from_rgb(0, 0, 0,), BLACK);
+        assert_eq!(Color::from_rgb(255, 255, 255), WHITE);
+
+        assert_eq!(Color::from_rgb(255, 0, 0), RED);
+        assert_eq!(Color::from_rgb(0, 255, 0), GREEN);
+        assert_eq!(Color::from_rgb(0, 0, 255), BLUE);
+
+        assert_eq!(Color::from_rgb(255, 255, 0), YELLOW);
+        assert_eq!(Color::from_rgb(0, 255, 255), CYAN);
+        assert_eq!(Color::from_rgb(255, 0, 255), MAGENTA);
+    }
+
+    #[test]
+    fn test_hex24() {
+        assert_eq!(Color::from_hex24(0x000000), BLACK);
+        assert_eq!(Color::from_hex24(0xffffff), WHITE);
+
+        assert_eq!(Color::from_hex24(0xff0000), RED);
+        assert_eq!(Color::from_hex24(0x00ff00), GREEN);
+        assert_eq!(Color::from_hex24(0x0000ff), BLUE);
+
+        assert_eq!(Color::from_hex24(0xffff00), YELLOW);
+        assert_eq!(Color::from_hex24(0x00ffff), CYAN);
+        assert_eq!(Color::from_hex24(0xff00ff), MAGENTA);
+    }
+
+    #[test]
+    fn test_hex32() {
+        assert_eq!(Color::from_hex32(0x000000ff), BLACK);
+        assert_eq!(Color::from_hex32(0xffffffff), WHITE);
+        assert_eq!(Color::from_hex32(0x00000000), TRANSPARENT);
+
+        assert_eq!(Color::from_hex32(0xff0000ff), RED);
+        assert_eq!(Color::from_hex32(0x00ff00ff), GREEN);
+        assert_eq!(Color::from_hex32(0x0000ffff), BLUE);
+
+        assert_eq!(Color::from_hex32(0xffff00ff), YELLOW);
+        assert_eq!(Color::from_hex32(0x00ffffff), CYAN);
+        assert_eq!(Color::from_hex32(0xff00ffff), MAGENTA);
     }
 
     #[test]
