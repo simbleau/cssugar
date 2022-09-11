@@ -82,13 +82,36 @@ impl Color {
         self.lighten(-a)
     }
 
-    pub const fn set_alpha(&self, a: f32) -> Self {
-        Color {
-            r: self.r,
-            g: self.g,
-            b: self.b,
-            a,
-        }
+    pub fn set_alpha(&mut self, a: f32) -> Self {
+        self.a = a;
+        *self
+    }
+
+    pub fn set_red(&mut self, r: u8) -> Self {
+        self.r = r;
+        *self
+    }
+
+    pub fn set_green(&mut self, g: u8) -> Self {
+        self.g = g;
+        *self
+    }
+
+    pub fn set_blue(&mut self, b: u8) -> Self {
+        self.b = b;
+        *self
+    }
+
+    pub fn set_hue(_h: f32) -> Self {
+        todo!()
+    }
+
+    pub fn set_saturation(_s: f32) -> Self {
+        todo!()
+    }
+
+    pub fn set_lightness(_l: f32) -> Self {
+        todo!()
     }
 }
 
