@@ -7,19 +7,34 @@ pub struct Color {
 }
 
 impl Color {
-    pub const fn rgb(r: u8, g: u8, b: u8) -> Color {
-        Self::rgba(r, g, b, 1.0)
+    pub const fn from_rgb(r: u8, g: u8, b: u8) -> Color {
+        Self::from_rgba(r, g, b, 1.0)
     }
 
-    pub const fn rgba(r: u8, g: u8, b: u8, a: f32) -> Color {
+    pub const fn from_rgba(r: u8, g: u8, b: u8, a: f32) -> Color {
         Color { r, g, b, a }
     }
 
-    pub fn hsl(h: i32, s: f32, l: f32) -> Color {
-        Self::hsla(h, s, l, 1.0)
+    pub const fn from_hex24(h: u32) -> Color {
+        let r = (h >> 16 | 0xff) as u8;
+        let g = (h >> 8 | 0xff) as u8;
+        let b = (h | 0xff) as u8;
+        Self::from_rgba(r, g, b, 1.0)
     }
 
-    pub fn hsla(h: i32, s: f32, l: f32, a: f32) -> Color {
+    pub fn from_hex32(h: u32) -> Color {
+        let r = (h >> 24 | 0xff) as u8;
+        let g = (h >> 16 | 0xff) as u8;
+        let b = (h >> 8 | 0xff) as u8;
+        let a = (h | 0xff) as f32 / 255.0;
+        Self::from_rgba(r, g, b, a)
+    }
+
+    pub fn from_hsl(h: i32, s: f32, l: f32) -> Color {
+        Self::from_hsla(h, s, l, 1.0)
+    }
+
+    pub fn from_hsla(h: i32, s: f32, l: f32, a: f32) -> Color {
         let c = (1.0 - (2.0 * l - 1.0).abs()) * s;
         let x = c * (1 - ((h / 60) % 2 - 1).abs()) as f32;
         let m = l - c / 2.0;
@@ -67,7 +82,7 @@ impl Color {
         self.lighten(-a)
     }
 
-    pub const fn with_alpha(&self, a: f32) -> Color {
+    pub const fn set_alpha(&self, a: f32) -> Self {
         Color {
             r: self.r,
             g: self.g,
@@ -89,21 +104,21 @@ mod tests {
 
     #[test]
     fn test_display() {
-        let color = Color::rgba(100, 200, 255, 0.5);
+        let color = Color::from_rgba(100, 200, 255, 0.5);
         assert_eq!(format!("{}", color), format!("rgba(100, 200, 255, 0.5)"));
     }
 
     #[test]
     fn test_hsl() {
-        assert_eq!(Color::hsl(0, 0.0, 0.0), BLACK);
-        assert_eq!(Color::hsl(0, 0.0, 1.0), WHITE);
+        assert_eq!(Color::from_hsl(0, 0.0, 0.0), BLACK);
+        assert_eq!(Color::from_hsl(0, 0.0, 1.0), WHITE);
 
-        assert_eq!(Color::hsl(0, 1.0, 0.5), RED);
-        assert_eq!(Color::hsl(120, 1.0, 0.5), GREEN);
-        assert_eq!(Color::hsl(240, 1.0, 0.5), BLUE);
+        assert_eq!(Color::from_hsl(0, 1.0, 0.5), RED);
+        assert_eq!(Color::from_hsl(120, 1.0, 0.5), GREEN);
+        assert_eq!(Color::from_hsl(240, 1.0, 0.5), BLUE);
 
-        assert_eq!(Color::hsl(60, 1.0, 0.5), YELLOW);
-        assert_eq!(Color::hsl(180, 1.0, 0.5), CYAN);
-        assert_eq!(Color::hsl(300, 1.0, 0.5), MAGENTA);
+        assert_eq!(Color::from_hsl(60, 1.0, 0.5), YELLOW);
+        assert_eq!(Color::from_hsl(180, 1.0, 0.5), CYAN);
+        assert_eq!(Color::from_hsl(300, 1.0, 0.5), MAGENTA);
     }
 }
