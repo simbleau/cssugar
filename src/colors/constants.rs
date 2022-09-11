@@ -17,6 +17,18 @@ mod tests {
     use crate::colors::*;
     #[test]
     fn test_constants() {
+        assert_eq!(WHITE.r, 255);
+        assert_eq!(WHITE.g, 255);
+        assert_eq!(WHITE.b, 255);
+        assert_eq!(WHITE.a, 1.0);
+
+        assert_eq!(BLACK.r, 0);
+        assert_eq!(BLACK.g, 0);
+        assert_eq!(BLACK.b, 0);
+        assert_eq!(BLACK.a, 1.0);
+
+        assert_eq!(TRANSPARENT.a, 0.0);
+
         assert_eq!(RED.r, 255);
         assert_eq!(RED.g, 0);
         assert_eq!(RED.b, 0);
@@ -32,16 +44,19 @@ mod tests {
         assert_eq!(BLUE.b, 255);
         assert_eq!(BLUE.a, 1.0);
 
-        assert_eq!(WHITE.r, 255);
-        assert_eq!(WHITE.g, 255);
-        assert_eq!(WHITE.b, 255);
-        assert_eq!(WHITE.a, 1.0);
+        assert_eq!(YELLOW.r, 255);
+        assert_eq!(YELLOW.g, 255);
+        assert_eq!(YELLOW.b, 0);
+        assert_eq!(YELLOW.a, 1.0);
 
-        assert_eq!(BLACK.r, 0);
-        assert_eq!(BLACK.g, 0);
-        assert_eq!(BLACK.b, 0);
-        assert_eq!(BLACK.a, 1.0);
+        assert_eq!(CYAN.r, 0);
+        assert_eq!(CYAN.g, 255);
+        assert_eq!(CYAN.b, 255);
+        assert_eq!(CYAN.a, 1.0);
 
-        assert_eq!(TRANSPARENT.a, 0.0);
+        assert_eq!(MAGENTA.r, 255);
+        assert_eq!(MAGENTA.g, 0);
+        assert_eq!(MAGENTA.b, 255);
+        assert_eq!(MAGENTA.a, 1.0);
     }
 }
