@@ -7,7 +7,7 @@ pub enum Angle {
     Rad(f64),
     Turn(f64),
     Percent(f64),
-
+    // Special
     Calc(Box<Calculation<Angle>>),
 }
 
