@@ -1,3 +1,5 @@
+use crate::functions::{Calculable, Calculation};
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum Length {
     // Relative
@@ -15,7 +17,11 @@ pub enum Length {
     Mm(f64),
     In(f64),
     Pt(f64),
+
+    Calc(Box<Calculation<Length>>),
 }
+
+impl Calculable for Length {}
 
 impl std::fmt::Display for Length {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -33,6 +39,14 @@ impl std::fmt::Display for Length {
             Length::Mm(v) => write!(f, "{}mm", v),
             Length::In(v) => write!(f, "{}in", v),
             Length::Pt(v) => write!(f, "{}pt", v),
+            Length::Calc(v) => write!(f, "{}", *v),
         }
+    }
+}
+
+impl std::ops::Add for Length {
+    type Output = Length;
+    fn add(self, rhs: Self) -> Self::Output {
+        Length::Calc(Box::new(Calculation::Add { lhs: self, rhs }))
     }
 }

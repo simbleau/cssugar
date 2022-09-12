@@ -1,32 +1,22 @@
-use crate::units::Length;
-
-#[derive(Debug, Clone, PartialEq)]
-pub enum LengthCalculation {
-    Add {
-        left: Box<Length>,
-        right: Box<Length>,
-    },
-    Sub {
-        left: Box<Length>,
-        right: Box<Length>,
-    },
-    Mul {
-        left: Box<Length>,
-        right: Box<Length>,
-    },
-    Div {
-        left: Box<Length>,
-        right: Box<Length>,
-    },
+pub(crate) mod markers {
+    pub trait Calculable: std::fmt::Display {}
 }
 
-impl std::fmt::Display for LengthCalculation {
+#[derive(Debug, Clone, PartialEq)]
+pub enum Calculation<T: markers::Calculable> {
+    Add { lhs: T, rhs: T },
+    Sub { lhs: T, rhs: T },
+    Mul { lhs: T, rhs: T },
+    Div { lhs: T, rhs: T },
+}
+
+impl<T: markers::Calculable> std::fmt::Display for Calculation<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            LengthCalculation::Add { left, right } => write!(f, "calc({} + {})", left, right),
-            LengthCalculation::Sub { left, right } => write!(f, "calc({} - {})", left, right),
-            LengthCalculation::Mul { left, right } => write!(f, "calc({} * {})", left, right),
-            LengthCalculation::Div { left, right } => write!(f, "calc({} / {})", left, right),
+            Calculation::Add { lhs, rhs } => write!(f, "calc({} + {})", lhs, rhs),
+            Calculation::Sub { lhs, rhs } => write!(f, "calc({} - {})", lhs, rhs),
+            Calculation::Mul { lhs, rhs } => write!(f, "calc({} * {})", lhs, rhs),
+            Calculation::Div { lhs, rhs } => write!(f, "calc({} / {})", lhs, rhs),
         }
     }
 }
