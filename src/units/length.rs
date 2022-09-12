@@ -17,7 +17,7 @@ pub enum Length {
     Mm(f64),
     In(f64),
     Pt(f64),
-
+    // Special
     Calc(Box<Calculation<Length>>),
 }
 
@@ -39,7 +39,7 @@ impl std::fmt::Display for Length {
             Length::Mm(v) => write!(f, "{}mm", v),
             Length::In(v) => write!(f, "{}in", v),
             Length::Pt(v) => write!(f, "{}pt", v),
-            Length::Calc(v) => write!(f, "{}", *v),
+            Length::Calc(v) => v.fmt(f),
         }
     }
 }
