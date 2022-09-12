@@ -32,3 +32,14 @@ impl<T: markers::Calculable> std::fmt::Display for Calculation<T> {
         )
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::units::*;
+
+    #[test]
+    fn test_display() {
+        let size = Length::Vw(100.) - Length::Px(300.);
+        assert_eq!(format!("{}", size), "calc(100vw - 300px)");
+    }
+}

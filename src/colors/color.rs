@@ -124,7 +124,7 @@ mod tests {
     #[test]
     fn test_display() {
         let color = Color::from_rgba(100, 200, 255, 0.5);
-        assert_eq!(format!("{}", color), format!("rgba(100, 200, 255, 0.5)"));
+        assert_eq!(format!("{}", color), "rgba(100, 200, 255, 0.5)");
     }
 
     #[test]
