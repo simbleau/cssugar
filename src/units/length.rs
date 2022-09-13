@@ -47,27 +47,27 @@ impl std::fmt::Display for Length {
 impl std::ops::Add for Length {
     type Output = Length;
     fn add(self, rhs: Self) -> Self::Output {
-        Length::Calc(Box::new(Calculation::Add { lhs: self, rhs }))
+        Length::Calc(Box::new(Calculation { lhs: self, rhs }))
     }
 }
 
 impl std::ops::Sub for Length {
     type Output = Length;
     fn sub(self, rhs: Self) -> Self::Output {
-        Length::Calc(Box::new(Calculation::Sub { lhs: self, rhs }))
+        Length::Calc(Box::new(Calculation { lhs: self, rhs }))
     }
 }
 
 impl std::ops::Mul for Length {
     type Output = Length;
     fn mul(self, rhs: Self) -> Self::Output {
-        Length::Calc(Box::new(Calculation::Mul { lhs: self, rhs }))
+        Length::Calc(Box::new(Calculation { lhs: self, rhs }))
     }
 }
 
 impl std::ops::Div for Length {
     type Output = Length;
     fn div(self, rhs: Self) -> Self::Output {
-        Length::Calc(Box::new(Calculation::Div { lhs: self, rhs }))
+        Length::Calc(Box::new(Calculation { lhs: self, rhs }))
     }
 }

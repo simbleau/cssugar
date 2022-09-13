@@ -1,19 +1,19 @@
 use crate::functions::{Calculable, Calculation};
 
 #[derive(Debug, Clone, PartialEq)]
-pub enum Angle {
+pub enum Angle<'a> {
     Deg(f64),
     Grad(f64),
     Rad(f64),
     Turn(f64),
     Percent(f64),
     // Special
-    Calc(Box<Calculation<Angle>>),
+    Calc(Calculation<&'a Angle<'a>>),
 }
 
-impl Calculable for Angle {}
+impl<'a> Calculable for &'a Angle<'a> {}
 
-impl std::fmt::Display for Angle {
+impl std::fmt::Display for Angle<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Angle::Deg(v) => write!(f, "{}deg", v),
@@ -26,30 +26,42 @@ impl std::fmt::Display for Angle {
     }
 }
 
-impl std::ops::Add for Angle {
-    type Output = Angle;
+impl<'a> std::ops::Add for &'a Angle<'a> {
+    type Output = Angle<'a>;
     fn add(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Box::new(Calculation::Add { lhs: self, rhs }))
+        Angle::Calc(Calculation {
+            lhs: &self,
+            rhs: &rhs,
+        })
     }
 }
 
-impl std::ops::Sub for Angle {
-    type Output = Angle;
+impl<'a> std::ops::Sub for &'a Angle<'a> {
+    type Output = Angle<'a>;
     fn sub(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Box::new(Calculation::Sub { lhs: self, rhs }))
+        Angle::Calc(Calculation {
+            lhs: &self,
+            rhs: &rhs,
+        })
     }
 }
 
-impl std::ops::Mul for Angle {
-    type Output = Angle;
+impl<'a> std::ops::Mul for &'a Angle<'a> {
+    type Output = Angle<'a>;
     fn mul(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Box::new(Calculation::Mul { lhs: self, rhs }))
+        Angle::Calc(Calculation {
+            lhs: &self,
+            rhs: &rhs,
+        })
     }
 }
 
-impl std::ops::Div for Angle {
-    type Output = Angle;
+impl<'a> std::ops::Div for &'a Angle<'a> {
+    type Output = Angle<'a>;
     fn div(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Box::new(Calculation::Div { lhs: self, rhs }))
+        Angle::Calc(Calculation {
+            lhs: &self,
+            rhs: &rhs,
+        })
     }
 }

@@ -27,27 +27,27 @@ impl std::fmt::Display for Time {
 impl std::ops::Add for Time {
     type Output = Time;
     fn add(self, rhs: Self) -> Self::Output {
-        Time::Calc(Box::new(Calculation::Add { lhs: self, rhs }))
+        Time::Calc(Box::new(Calculation { lhs: self, rhs }))
     }
 }
 
 impl std::ops::Sub for Time {
     type Output = Time;
     fn sub(self, rhs: Self) -> Self::Output {
-        Time::Calc(Box::new(Calculation::Sub { lhs: self, rhs }))
+        Time::Calc(Box::new(Calculation { lhs: self, rhs }))
     }
 }
 
 impl std::ops::Mul for Time {
     type Output = Time;
     fn mul(self, rhs: Self) -> Self::Output {
-        Time::Calc(Box::new(Calculation::Mul { lhs: self, rhs }))
+        Time::Calc(Box::new(Calculation { lhs: self, rhs }))
     }
 }
 
 impl std::ops::Div for Time {
     type Output = Time;
     fn div(self, rhs: Self) -> Self::Output {
-        Time::Calc(Box::new(Calculation::Div { lhs: self, rhs }))
+        Time::Calc(Box::new(Calculation { lhs: self, rhs }))
     }
 }
