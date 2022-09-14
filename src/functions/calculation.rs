@@ -11,7 +11,7 @@ pub(crate) mod markers {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Operation {
+enum Operation {
     Add,
     Sub,
     Mul,
@@ -22,7 +22,7 @@ pub enum Operation {
 pub struct Calculation<T: markers::Calculable> {
     pub lhs: T,
     pub rhs: T,
-    pub op: Operation,
+    op: Operation,
 }
 
 impl<T: markers::Calculable> Calculation<T> {
