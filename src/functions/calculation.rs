@@ -22,9 +22,7 @@ where
     _phantom: PhantomData<A>,
 }
 
-impl<A, T: markers::Calculable<A>, K: markers::Calculable<A>>
-    Calculation<A, T, K>
-{
+impl<A, T: Calculable<A>, K: Calculable<A>> Calculation<A, T, K> {
     pub fn add(lhs: T, rhs: K) -> Self {
         Calculation {
             lhs,

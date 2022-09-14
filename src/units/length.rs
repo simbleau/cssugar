@@ -1,4 +1,4 @@
-use crate::functions::markers::{self, Calculable};
+use crate::functions::markers::Calculable;
 use crate::functions::Calculation;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -42,30 +42,30 @@ impl std::fmt::Display for Length {
     }
 }
 
-impl std::ops::Add for Length {
-    type Output = Calculation<Length, Length, Length>;
-    fn add(self, rhs: Self) -> Self::Output {
+impl<T: Calculable<Length>> std::ops::Add<T> for Length {
+    type Output = Calculation<Length, Length, T>;
+    fn add(self, rhs: T) -> Self::Output {
         Calculation::add(self, rhs)
     }
 }
 
-impl std::ops::Sub for Length {
-    type Output = Calculation<Length, Length, Length>;
-    fn sub(self, rhs: Self) -> Self::Output {
+impl<T: Calculable<Length>> std::ops::Sub<T> for Length {
+    type Output = Calculation<Length, Length, T>;
+    fn sub(self, rhs: T) -> Self::Output {
         Calculation::sub(self, rhs)
     }
 }
 
-impl std::ops::Mul for Length {
-    type Output = Calculation<Length, Length, Length>;
-    fn mul(self, rhs: Self) -> Self::Output {
+impl<T: Calculable<Length>> std::ops::Mul<T> for Length {
+    type Output = Calculation<Length, Length, T>;
+    fn mul(self, rhs: T) -> Self::Output {
         Calculation::mul(self, rhs)
     }
 }
 
-impl std::ops::Div for Length {
-    type Output = Calculation<Length, Length, Length>;
-    fn div(self, rhs: Self) -> Self::Output {
+impl<T: Calculable<Length>> std::ops::Div<T> for Length {
+    type Output = Calculation<Length, Length, T>;
+    fn div(self, rhs: T) -> Self::Output {
         Calculation::div(self, rhs)
     }
 }
