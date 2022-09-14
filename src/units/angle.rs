@@ -1,19 +1,17 @@
 use crate::functions::{Calculable, Calculation};
 
-#[derive(Debug, Clone, PartialEq)]
-pub enum Angle<'a> {
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Angle {
     Deg(f64),
     Grad(f64),
     Rad(f64),
     Turn(f64),
     Percent(f64),
-    // Special
-    Calc(Calculation<&'a Angle<'a>>),
 }
 
-impl<'a> Calculable for &'a Angle<'a> {}
+impl Calculable for Angle {}
 
-impl std::fmt::Display for Angle<'_> {
+impl std::fmt::Display for Angle {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Angle::Deg(v) => write!(f, "{}deg", v),
@@ -21,47 +19,34 @@ impl std::fmt::Display for Angle<'_> {
             Angle::Rad(v) => write!(f, "{}rad", v),
             Angle::Turn(v) => write!(f, "{}turn", v),
             Angle::Percent(v) => write!(f, "{}%", v),
-            Angle::Calc(v) => v.fmt(f),
         }
     }
 }
 
-impl<'a> std::ops::Add for &'a Angle<'a> {
-    type Output = Angle<'a>;
+impl std::ops::Add for Angle {
+    type Output = Calculation<Angle>;
     fn add(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Calculation {
-            lhs: &self,
-            rhs: &rhs,
-        })
+        Calculation::add(self, rhs)
     }
 }
 
-impl<'a> std::ops::Sub for &'a Angle<'a> {
-    type Output = Angle<'a>;
+impl std::ops::Sub for Angle {
+    type Output = Calculation<Angle>;
     fn sub(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Calculation {
-            lhs: &self,
-            rhs: &rhs,
-        })
+        Calculation::sub(self, rhs)
     }
 }
 
-impl<'a> std::ops::Mul for &'a Angle<'a> {
-    type Output = Angle<'a>;
+impl std::ops::Mul for Angle {
+    type Output = Calculation<Angle>;
     fn mul(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Calculation {
-            lhs: &self,
-            rhs: &rhs,
-        })
+        Calculation::mul(self, rhs)
     }
 }
 
-impl<'a> std::ops::Div for &'a Angle<'a> {
-    type Output = Angle<'a>;
+impl std::ops::Div for Angle {
+    type Output = Calculation<Angle>;
     fn div(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Calculation {
-            lhs: &self,
-            rhs: &rhs,
-        })
+        Calculation::div(self, rhs)
     }
 }

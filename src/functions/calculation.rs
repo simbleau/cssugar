@@ -10,15 +10,69 @@ pub(crate) mod markers {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Operation {
+    Add,
+    Sub,
+    Mul,
+    Div,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Calculation<T: markers::Calculable> {
     pub lhs: T,
     pub rhs: T,
+    pub op: Operation,
+}
+
+impl<T: markers::Calculable> Calculation<T> {
+    pub fn add(lhs: T, rhs: T) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Add,
+        }
+    }
+
+    pub fn sub(lhs: T, rhs: T) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Sub,
+        }
+    }
+
+    pub fn mul(lhs: T, rhs: T) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Mul,
+        }
+    }
+
+    pub fn div(lhs: T, rhs: T) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Div,
+        }
+    }
 }
 
 impl<T: markers::Calculable> std::fmt::Display for Calculation<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "calc({})", self.lhs)
+        write!(
+            f,
+            "calc({} {} {})",
+            self.lhs,
+            match self.op {
+                Operation::Add => "+",
+                Operation::Sub => "-",
+                Operation::Mul => "*",
+                Operation::Div => "/",
+            },
+            self.rhs
+        )
     }
 }
 
