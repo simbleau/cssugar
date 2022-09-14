@@ -1,3 +1,5 @@
+#![feature(type_alias_impl_trait)]
+
 pub mod colors;
 pub mod functions;
 pub mod units;

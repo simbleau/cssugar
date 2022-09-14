@@ -1,3 +1,7 @@
 mod calculation;
-pub(crate) use calculation::markers::Calculable;
 pub use calculation::Calculation;
+
+mod calculable;
+pub(crate) mod markers {
+    pub use super::calculable::Calculable;
+}

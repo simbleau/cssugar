@@ -1,14 +1,6 @@
-pub(crate) mod markers {
-    pub trait Calculable:
-        std::fmt::Display
-        + std::ops::Add
-        + std::ops::Sub
-        + std::ops::Mul
-        + std::ops::Div
-        + Sized
-    {
-    }
-}
+use std::marker::PhantomData;
+
+use super::markers::{self, Calculable};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum Operation {
@@ -19,47 +11,60 @@ enum Operation {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Calculation<T: markers::Calculable> {
+pub struct Calculation<A, T, K>
+where
+    T: super::markers::Calculable<A>,
+    K: super::markers::Calculable<A>,
+{
     pub lhs: T,
-    pub rhs: T,
+    pub rhs: K,
     op: Operation,
+    _phantom: PhantomData<A>,
 }
 
-impl<T: markers::Calculable> Calculation<T> {
-    pub fn add(lhs: T, rhs: T) -> Self {
+impl<A, T: markers::Calculable<A>, K: markers::Calculable<A>>
+    Calculation<A, T, K>
+{
+    pub fn add(lhs: T, rhs: K) -> Self {
         Calculation {
             lhs,
             rhs,
             op: Operation::Add,
+            _phantom: PhantomData,
         }
     }
 
-    pub fn sub(lhs: T, rhs: T) -> Self {
+    pub fn sub(lhs: T, rhs: K) -> Self {
         Calculation {
             lhs,
             rhs,
             op: Operation::Sub,
+            _phantom: PhantomData,
         }
     }
 
-    pub fn mul(lhs: T, rhs: T) -> Self {
+    pub fn mul(lhs: T, rhs: K) -> Self {
         Calculation {
             lhs,
             rhs,
             op: Operation::Mul,
+            _phantom: PhantomData,
         }
     }
 
-    pub fn div(lhs: T, rhs: T) -> Self {
+    pub fn div(lhs: T, rhs: K) -> Self {
         Calculation {
             lhs,
             rhs,
             op: Operation::Div,
+            _phantom: PhantomData,
         }
     }
 }
 
-impl<T: markers::Calculable> std::fmt::Display for Calculation<T> {
+impl<A, T: markers::Calculable<A>, K: markers::Calculable<A>> std::fmt::Display
+    for Calculation<A, T, K>
+{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
@@ -88,5 +93,16 @@ mod tests {
         assert_eq!(format!("{}", l1 - l2), "calc(100vw - 300px)");
         assert_eq!(format!("{}", l1 * l2), "calc(100vw * 300px)");
         assert_eq!(format!("{}", l1 / l2), "calc(100vw / 300px)");
+    }
+
+    #[test]
+    fn test_composition() {
+        let l1 = Length::Vw(100.);
+        let l2 = Length::Px(300.);
+        let l3 = Length::In(3.);
+        assert_eq!(
+            format!("{}", l1 + l2 + l3),
+            "calc(calc(100vw + 300px), 3in)"
+        );
     }
 }

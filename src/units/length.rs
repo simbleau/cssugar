@@ -1,4 +1,5 @@
-use crate::functions::{Calculable, Calculation};
+use crate::functions::markers::{self, Calculable};
+use crate::functions::Calculation;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Length {
@@ -19,7 +20,7 @@ pub enum Length {
     Pt(f64),
 }
 
-impl Calculable for Length {}
+impl Calculable<Length> for Length {}
 
 impl std::fmt::Display for Length {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -42,28 +43,28 @@ impl std::fmt::Display for Length {
 }
 
 impl std::ops::Add for Length {
-    type Output = Calculation<Length>;
+    type Output = Calculation<Length, Length, Length>;
     fn add(self, rhs: Self) -> Self::Output {
         Calculation::add(self, rhs)
     }
 }
 
 impl std::ops::Sub for Length {
-    type Output = Calculation<Length>;
+    type Output = Calculation<Length, Length, Length>;
     fn sub(self, rhs: Self) -> Self::Output {
         Calculation::sub(self, rhs)
     }
 }
 
 impl std::ops::Mul for Length {
-    type Output = Calculation<Length>;
+    type Output = Calculation<Length, Length, Length>;
     fn mul(self, rhs: Self) -> Self::Output {
         Calculation::mul(self, rhs)
     }
 }
 
 impl std::ops::Div for Length {
-    type Output = Calculation<Length>;
+    type Output = Calculation<Length, Length, Length>;
     fn div(self, rhs: Self) -> Self::Output {
         Calculation::div(self, rhs)
     }
