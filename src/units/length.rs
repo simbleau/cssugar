@@ -1,6 +1,6 @@
 use crate::functions::{Calculable, Calculation};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Length {
     // Relative
     Em(f64),
@@ -17,8 +17,6 @@ pub enum Length {
     Mm(f64),
     In(f64),
     Pt(f64),
-    // Special
-    Calc(Box<Calculation<Length>>),
 }
 
 impl Calculable for Length {}
@@ -39,35 +37,34 @@ impl std::fmt::Display for Length {
             Length::Mm(v) => write!(f, "{}mm", v),
             Length::In(v) => write!(f, "{}in", v),
             Length::Pt(v) => write!(f, "{}pt", v),
-            Length::Calc(v) => v.fmt(f),
         }
     }
 }
 
 impl std::ops::Add for Length {
-    type Output = Length;
+    type Output = Calculation<Length>;
     fn add(self, rhs: Self) -> Self::Output {
-        Length::Calc(Box::new(Calculation::Add { lhs: self, rhs }))
+        Calculation::add(self, rhs)
     }
 }
 
 impl std::ops::Sub for Length {
-    type Output = Length;
+    type Output = Calculation<Length>;
     fn sub(self, rhs: Self) -> Self::Output {
-        Length::Calc(Box::new(Calculation::Sub { lhs: self, rhs }))
+        Calculation::sub(self, rhs)
     }
 }
 
 impl std::ops::Mul for Length {
-    type Output = Length;
+    type Output = Calculation<Length>;
     fn mul(self, rhs: Self) -> Self::Output {
-        Length::Calc(Box::new(Calculation::Mul { lhs: self, rhs }))
+        Calculation::mul(self, rhs)
     }
 }
 
 impl std::ops::Div for Length {
-    type Output = Length;
+    type Output = Calculation<Length>;
     fn div(self, rhs: Self) -> Self::Output {
-        Length::Calc(Box::new(Calculation::Div { lhs: self, rhs }))
+        Calculation::div(self, rhs)
     }
 }

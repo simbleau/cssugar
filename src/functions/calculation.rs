@@ -10,25 +10,68 @@ pub(crate) mod markers {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
-pub enum Calculation<T: markers::Calculable> {
-    Add { lhs: T, rhs: T },
-    Sub { lhs: T, rhs: T },
-    Mul { lhs: T, rhs: T },
-    Div { lhs: T, rhs: T },
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Operation {
+    Add,
+    Sub,
+    Mul,
+    Div,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Calculation<T: markers::Calculable> {
+    pub lhs: T,
+    pub rhs: T,
+    pub op: Operation,
+}
+
+impl<T: markers::Calculable> Calculation<T> {
+    pub fn add(lhs: T, rhs: T) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Add,
+        }
+    }
+
+    pub fn sub(lhs: T, rhs: T) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Sub,
+        }
+    }
+
+    pub fn mul(lhs: T, rhs: T) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Mul,
+        }
+    }
+
+    pub fn div(lhs: T, rhs: T) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Div,
+        }
+    }
 }
 
 impl<T: markers::Calculable> std::fmt::Display for Calculation<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "calc({})",
-            match self {
-                Calculation::Add { lhs, rhs } => format!("{} + {}", lhs, rhs),
-                Calculation::Sub { lhs, rhs } => format!("{} - {}", lhs, rhs),
-                Calculation::Mul { lhs, rhs } => format!("{} * {}", lhs, rhs),
-                Calculation::Div { lhs, rhs } => format!("{} / {}", lhs, rhs),
-            }
+            "calc({} {} {})",
+            self.lhs,
+            match self.op {
+                Operation::Add => "+",
+                Operation::Sub => "-",
+                Operation::Mul => "*",
+                Operation::Div => "/",
+            },
+            self.rhs
         )
     }
 }
@@ -39,7 +82,11 @@ mod tests {
 
     #[test]
     fn test_display() {
-        let size = Length::Vw(100.) - Length::Px(300.);
-        assert_eq!(format!("{}", size), "calc(100vw - 300px)");
+        let l1 = Length::Vw(100.);
+        let l2 = Length::Px(300.);
+        assert_eq!(format!("{}", l1 + l2), "calc(100vw + 300px)");
+        assert_eq!(format!("{}", l1 - l2), "calc(100vw - 300px)");
+        assert_eq!(format!("{}", l1 * l2), "calc(100vw * 300px)");
+        assert_eq!(format!("{}", l1 / l2), "calc(100vw / 300px)");
     }
 }

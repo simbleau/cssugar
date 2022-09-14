@@ -1,14 +1,12 @@
 use crate::functions::{Calculable, Calculation};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Angle {
     Deg(f64),
     Grad(f64),
     Rad(f64),
     Turn(f64),
     Percent(f64),
-    // Special
-    Calc(Box<Calculation<Angle>>),
 }
 
 impl Calculable for Angle {}
@@ -21,35 +19,34 @@ impl std::fmt::Display for Angle {
             Angle::Rad(v) => write!(f, "{}rad", v),
             Angle::Turn(v) => write!(f, "{}turn", v),
             Angle::Percent(v) => write!(f, "{}%", v),
-            Angle::Calc(v) => v.fmt(f),
         }
     }
 }
 
 impl std::ops::Add for Angle {
-    type Output = Angle;
+    type Output = Calculation<Angle>;
     fn add(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Box::new(Calculation::Add { lhs: self, rhs }))
+        Calculation::add(self, rhs)
     }
 }
 
 impl std::ops::Sub for Angle {
-    type Output = Angle;
+    type Output = Calculation<Angle>;
     fn sub(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Box::new(Calculation::Sub { lhs: self, rhs }))
+        Calculation::sub(self, rhs)
     }
 }
 
 impl std::ops::Mul for Angle {
-    type Output = Angle;
+    type Output = Calculation<Angle>;
     fn mul(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Box::new(Calculation::Mul { lhs: self, rhs }))
+        Calculation::mul(self, rhs)
     }
 }
 
 impl std::ops::Div for Angle {
-    type Output = Angle;
+    type Output = Calculation<Angle>;
     fn div(self, rhs: Self) -> Self::Output {
-        Angle::Calc(Box::new(Calculation::Div { lhs: self, rhs }))
+        Calculation::div(self, rhs)
     }
 }
