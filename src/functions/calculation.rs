@@ -13,8 +13,8 @@ enum Operation {
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Calculation<A, T, K>
 where
-    T: super::markers::Calculable<A>,
-    K: super::markers::Calculable<A>,
+    T: Calculable<A>,
+    K: Calculable<A>,
 {
     pub lhs: T,
     pub rhs: K,
@@ -76,6 +76,62 @@ impl<A, T: markers::Calculable<A>, K: markers::Calculable<A>> std::fmt::Display
             },
             self.rhs
         )
+    }
+}
+
+impl<A, T, K> Calculable<A> for Calculation<A, T, K>
+where
+    T: Calculable<A>,
+    K: Calculable<A>,
+{
+}
+
+impl<A, T, K> std::ops::Add<T> for Calculation<A, T, K>
+where
+    T: Calculable<A>,
+    K: Calculable<A>,
+{
+    type Output = Calculation<A, T, K>;
+    fn add(self, rhs: T) -> Self::Output {
+        Calculation::add(self, rhs)
+    }
+}
+
+impl<A, T, K> std::ops::Sub<T> for Calculation<A, T, K>
+where
+    T: Calculable<A>,
+    K: Calculable<A>,
+{
+    type Output = Calculation<A, T, K>;
+    fn sub(self, rhs: T) -> Self::Output {
+        Calculation::sub(self, rhs)
+    }
+}
+
+impl<A, T, K> std::ops::Mul<T> for Calculation<A, T, K>
+where
+    T: Calculable<A>,
+    K: Calculable<A>,
+{
+    type Output = Calculation<A, T, K>;
+    fn mul(self, rhs: T) -> Self::Output {
+        Calculation::mul(self, rhs)
+    }
+}
+
+impl<A, T, K> std::ops::Div<T> for Calculation<A, T, K>
+where
+    T: Calculable<A>,
+    K: Calculable<A>,
+{
+    type Output = Calculation<A, T, K>;
+    fn div(self, rhs: T) -> Self::Output {
+        Calculation {
+            lhs: self,
+            rhs,
+            op: Operation::Div,
+            _phantom: PhantomData,
+        }
     }
 }
 
