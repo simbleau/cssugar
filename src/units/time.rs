@@ -1,4 +1,4 @@
-use crate::functions::markers::{self, Calculable};
+use crate::functions::markers::Calculable;
 use crate::functions::Calculation;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
