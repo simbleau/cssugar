@@ -10,6 +10,10 @@ pub enum Angle {
     Percent(f64),
 }
 
+impl Calculable for Angle {
+    type Unit = Angle;
+}
+
 impl std::fmt::Display for Angle {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -20,10 +24,6 @@ impl std::fmt::Display for Angle {
             Angle::Percent(v) => write!(f, "{}%", v),
         }
     }
-}
-
-impl Calculable for Angle {
-    type Unit = Angle;
 }
 
 impl<Rhs> std::ops::Add<Rhs> for Angle {

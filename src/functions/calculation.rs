@@ -15,23 +15,6 @@ pub struct Calculation<L, R> {
     op: Operation,
 }
 
-impl<L: Calculable, R: Calculable> std::fmt::Display for Calculation<L, R> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "calc({} {} {})",
-            self.lhs,
-            match self.op {
-                Operation::Add => "+",
-                Operation::Sub => "-",
-                Operation::Mul => "*",
-                Operation::Div => "/",
-            },
-            self.rhs
-        )
-    }
-}
-
 impl<L, R> Calculation<L, R> {
     pub fn add(lhs: L, rhs: R) -> Self {
         Calculation {
@@ -69,6 +52,27 @@ where
     R: Calculable<Unit = <L as Calculable>::Unit>,
 {
     type Unit = <L as Calculable>::Unit;
+}
+
+impl<L, R> std::fmt::Display for Calculation<L, R>
+where
+    L: Calculable,
+    R: Calculable,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "calc({} {} {})",
+            self.lhs,
+            match self.op {
+                Operation::Add => "+",
+                Operation::Sub => "-",
+                Operation::Mul => "*",
+                Operation::Div => "/",
+            },
+            self.rhs
+        )
+    }
 }
 
 impl<L, R, Rhs> std::ops::Add<Rhs> for Calculation<L, R>

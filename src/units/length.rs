@@ -20,6 +20,10 @@ pub enum Length {
     Pt(f64),
 }
 
+impl Calculable for Length {
+    type Unit = Length;
+}
+
 impl std::fmt::Display for Length {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -38,10 +42,6 @@ impl std::fmt::Display for Length {
             Length::Pt(v) => write!(f, "{}pt", v),
         }
     }
-}
-
-impl Calculable for Length {
-    type Unit = Length;
 }
 
 impl<Rhs> std::ops::Add<Rhs> for Length {

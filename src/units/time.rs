@@ -9,6 +9,10 @@ pub enum Time {
     Duration(std::time::Duration),
 }
 
+impl Calculable for Time {
+    type Unit = Time;
+}
+
 impl std::fmt::Display for Time {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -18,10 +22,6 @@ impl std::fmt::Display for Time {
             Time::Duration(v) => write!(f, "{}ms", v.as_millis()),
         }
     }
-}
-
-impl Calculable for Time {
-    type Unit = Time;
 }
 
 impl<Rhs> std::ops::Add<Rhs> for Time {
