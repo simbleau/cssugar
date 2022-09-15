@@ -16,28 +16,28 @@ pub struct Calculation<L, R> {
 }
 
 impl<L, R> Calculation<L, R> {
-    pub fn add(lhs: L, rhs: R) -> Self {
+    pub(crate) fn add(lhs: L, rhs: R) -> Self {
         Calculation {
             lhs,
             rhs,
             op: Operation::Add,
         }
     }
-    pub fn sub(lhs: L, rhs: R) -> Self {
+    pub(crate) fn sub(lhs: L, rhs: R) -> Self {
         Calculation {
             lhs,
             rhs,
             op: Operation::Sub,
         }
     }
-    pub fn mul(lhs: L, rhs: R) -> Self {
+    pub(crate) fn mul(lhs: L, rhs: R) -> Self {
         Calculation {
             lhs,
             rhs,
             op: Operation::Mul,
         }
     }
-    pub fn div(lhs: L, rhs: R) -> Self {
+    pub(crate) fn div(lhs: L, rhs: R) -> Self {
         Calculation {
             lhs,
             rhs,
