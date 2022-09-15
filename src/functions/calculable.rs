@@ -1,7 +1,5 @@
-use std::fmt::Display;
+use std::{fmt::Display, ops::Add, ops::Div, ops::Mul, ops::Sub};
 
-pub trait Calculable:
-    Display + Sized + std::ops::Add + std::ops::Sub + std::ops::Mul + std::ops::Div
-{
+pub trait Calculable: Display + Sized + Add + Sub + Mul + Div {
     type Unit;
 }
