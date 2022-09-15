@@ -9,8 +9,6 @@ pub enum Time {
     Duration(std::time::Duration),
 }
 
-impl Calculable<Time> for Time {}
-
 impl std::fmt::Display for Time {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -22,30 +20,34 @@ impl std::fmt::Display for Time {
     }
 }
 
-impl std::ops::Add for Time {
-    type Output = Calculation<Time, Time, Time>;
-    fn add(self, rhs: Self) -> Self::Output {
+impl Calculable for Time {
+    type Unit = Time;
+}
+
+impl<Rhs> std::ops::Add<Rhs> for Time {
+    type Output = Calculation<Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::add(self, rhs)
     }
 }
 
-impl std::ops::Sub for Time {
-    type Output = Calculation<Time, Time, Time>;
-    fn sub(self, rhs: Self) -> Self::Output {
+impl<Rhs> std::ops::Sub<Rhs> for Time {
+    type Output = Calculation<Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::sub(self, rhs)
     }
 }
 
-impl std::ops::Mul for Time {
-    type Output = Calculation<Time, Time, Time>;
-    fn mul(self, rhs: Self) -> Self::Output {
+impl<Rhs> std::ops::Mul<Rhs> for Time {
+    type Output = Calculation<Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::mul(self, rhs)
     }
 }
 
-impl std::ops::Div for Time {
-    type Output = Calculation<Time, Time, Time>;
-    fn div(self, rhs: Self) -> Self::Output {
+impl<Rhs> std::ops::Div<Rhs> for Time {
+    type Output = Calculation<Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::div(self, rhs)
     }
 }
