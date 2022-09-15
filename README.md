@@ -17,9 +17,9 @@ use cssugar::units::{Px, Vw};
 #[function_component(SizedButton)]
 pub fn sized_button() -> Html {
     let size = Vw(100) - Px(300);
-    let button_css = css!("width: ${size};");
+    let button_css = format!("width: ${size};");
     html! {
-        <button class={button_css}>{ "CLICK ME!" }</button>
+        <button style={button_css}>{ "CLICK ME!" }</button>
     }
 }
 ```
@@ -35,9 +35,9 @@ use cssugar::colors::{Color, BLACK};
 #[function_component(SizedButton)]
 pub fn sized_button() -> Html {
     let color = Color::rgb(255, 0, 0).blend(BLACK);
-    let label_css = css!("color: ${color};");
+    let label_css = format!("color: ${color};");
     html! {
-        <label class={label_css}>{ "I am dark red!" }</label>
+        <label style={label_css}>{ "I am dark red!" }</label>
     }
 }
 ```
