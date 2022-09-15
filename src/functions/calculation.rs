@@ -22,10 +22,10 @@ impl<L: Calculable, R: Calculable> std::fmt::Display for Calculation<L, R> {
             "calc({} {} {})",
             self.lhs,
             match self.op {
-                Operation::Add => "",
-                Operation::Sub => "",
-                Operation::Mul => "",
-                Operation::Div => "",
+                Operation::Add => "+",
+                Operation::Sub => "-",
+                Operation::Mul => "*",
+                Operation::Div => "/",
             },
             self.rhs
         )
