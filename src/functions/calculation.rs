@@ -1,6 +1,4 @@
-use std::marker::PhantomData;
-
-use super::markers::{self, Calculable};
+use super::markers::Calculable;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum Operation {
@@ -11,58 +9,13 @@ enum Operation {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Calculation<A, L, R>
-where
-    L: Calculable<A>,
-    R: Calculable<A>,
-{
-    pub lhs: L,
-    pub rhs: R,
+pub struct Calculation<L, R> {
+    lhs: L,
+    rhs: R,
     op: Operation,
-    _pd: PhantomData<A>,
 }
 
-impl<A, L: Calculable<A>, R: Calculable<A>> Calculation<A, L, R> {
-    pub fn add(lhs: L, rhs: R) -> Self {
-        Calculation {
-            lhs,
-            rhs,
-            op: Operation::Add,
-            _pd: PhantomData,
-        }
-    }
-
-    pub fn sub(lhs: L, rhs: R) -> Self {
-        Calculation {
-            lhs,
-            rhs,
-            op: Operation::Sub,
-            _pd: PhantomData,
-        }
-    }
-
-    pub fn mul(lhs: L, rhs: R) -> Self {
-        Calculation {
-            lhs,
-            rhs,
-            op: Operation::Mul,
-            _pd: PhantomData,
-        }
-    }
-
-    pub fn div(lhs: L, rhs: R) -> Self {
-        Calculation {
-            lhs,
-            rhs,
-            op: Operation::Div,
-            _pd: PhantomData,
-        }
-    }
-}
-
-impl<A, L: markers::Calculable<A>, R: markers::Calculable<A>> std::fmt::Display
-    for Calculation<A, L, R>
-{
+impl<L: Calculable, R: Calculable> std::fmt::Display for Calculation<L, R> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
@@ -79,78 +32,90 @@ impl<A, L: markers::Calculable<A>, R: markers::Calculable<A>> std::fmt::Display
     }
 }
 
-impl<A, L, R> Calculable<A> for Calculation<A, L, R>
-where
-    L: Calculable<A>,
-    R: Calculable<A>,
-{
-}
-
-impl<A, L, R, Other> std::ops::Add<Other> for Calculation<A, L, R>
-where
-    L: Calculable<A>,
-    R: Calculable<A>,
-    Other: Calculable<A>,
-{
-    type Output = Calculation<A, Self, Other>;
-    fn add(self, rhs: Other) -> Calculation<A, Self, Other> {
+impl<L, R> Calculation<L, R> {
+    pub fn add(lhs: L, rhs: R) -> Self {
         Calculation {
-            lhs: self,
+            lhs,
             rhs,
             op: Operation::Add,
-            _pd: std::marker::PhantomData,
         }
     }
-}
-
-impl<A, L, R, Other> std::ops::Sub<Other> for Calculation<A, L, R>
-where
-    L: Calculable<A>,
-    R: Calculable<A>,
-    Other: Calculable<A>,
-{
-    type Output = Calculation<A, Self, Other>;
-    fn sub(self, rhs: Other) -> Calculation<A, Self, Other> {
+    pub fn sub(lhs: L, rhs: R) -> Self {
         Calculation {
-            lhs: self,
+            lhs,
             rhs,
             op: Operation::Sub,
-            _pd: std::marker::PhantomData,
         }
     }
-}
-
-impl<A, L, R, Other> std::ops::Mul<Other> for Calculation<A, L, R>
-where
-    L: Calculable<A>,
-    R: Calculable<A>,
-    Other: Calculable<A>,
-{
-    type Output = Calculation<A, Self, Other>;
-    fn mul(self, rhs: Other) -> Calculation<A, Self, Other> {
+    pub fn mul(lhs: L, rhs: R) -> Self {
         Calculation {
-            lhs: self,
+            lhs,
             rhs,
             op: Operation::Mul,
-            _pd: std::marker::PhantomData,
+        }
+    }
+    pub fn div(lhs: L, rhs: R) -> Self {
+        Calculation {
+            lhs,
+            rhs,
+            op: Operation::Div,
         }
     }
 }
 
-impl<A, L, R, Other> std::ops::Div<Other> for Calculation<A, L, R>
+impl<L, R> Calculable for Calculation<L, R>
 where
-    L: Calculable<A>,
-    R: Calculable<A>,
-    Other: Calculable<A>,
+    L: Calculable,
+    R: Calculable<Unit = <L as Calculable>::Unit>,
 {
-    type Output = Calculation<A, Self, Other>;
-    fn div(self, rhs: Other) -> Calculation<A, Self, Other> {
-        Calculation {
-            lhs: self,
-            rhs,
-            op: Operation::Div,
-            _pd: std::marker::PhantomData,
-        }
+    type Unit = <L as Calculable>::Unit;
+}
+
+impl<L, R, Rhs> std::ops::Add<Rhs> for Calculation<L, R>
+where
+    L: Calculable,
+    R: Calculable<Unit = <L as Calculable>::Unit>,
+    Rhs: Calculable<Unit = <L as Calculable>::Unit>,
+{
+    type Output = Calculation<Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+        Calculation::add(self, rhs)
+    }
+}
+
+impl<L, R, Rhs> std::ops::Sub<Rhs> for Calculation<L, R>
+where
+    L: Calculable,
+    R: Calculable<Unit = <L as Calculable>::Unit>,
+    Rhs: Calculable<Unit = <L as Calculable>::Unit>,
+{
+    type Output = Calculation<Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+        Calculation::sub(self, rhs)
+    }
+}
+
+impl<L, R, Rhs> std::ops::Mul<Rhs> for Calculation<L, R>
+where
+    L: Calculable,
+    R: Calculable<Unit = <L as Calculable>::Unit>,
+    Rhs: Calculable<Unit = <L as Calculable>::Unit>,
+{
+    type Output = Calculation<Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+        Calculation::mul(self, rhs)
+    }
+}
+
+impl<L, R, Rhs> std::ops::Div<Rhs> for Calculation<L, R>
+where
+    L: Calculable,
+    R: Calculable<Unit = <L as Calculable>::Unit>,
+    Rhs: Calculable<Unit = <L as Calculable>::Unit>,
+{
+    type Output = Calculation<Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+        Calculation::div(self, rhs)
     }
 }
 

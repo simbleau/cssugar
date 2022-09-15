@@ -20,8 +20,6 @@ pub enum Length {
     Pt(f64),
 }
 
-impl Calculable<Length> for Length {}
-
 impl std::fmt::Display for Length {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -42,30 +40,34 @@ impl std::fmt::Display for Length {
     }
 }
 
-impl<T: Calculable<Length>> std::ops::Add<T> for Length {
-    type Output = Calculation<Length, Length, T>;
-    fn add(self, rhs: T) -> Self::Output {
+impl Calculable for Length {
+    type Unit = Length;
+}
+
+impl<Rhs> std::ops::Add<Rhs> for Length {
+    type Output = Calculation<Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::add(self, rhs)
     }
 }
 
-impl<T: Calculable<Length>> std::ops::Sub<T> for Length {
-    type Output = Calculation<Length, Length, T>;
-    fn sub(self, rhs: T) -> Self::Output {
+impl<Rhs> std::ops::Sub<Rhs> for Length {
+    type Output = Calculation<Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::sub(self, rhs)
     }
 }
 
-impl<T: Calculable<Length>> std::ops::Mul<T> for Length {
-    type Output = Calculation<Length, Length, T>;
-    fn mul(self, rhs: T) -> Self::Output {
+impl<Rhs> std::ops::Mul<Rhs> for Length {
+    type Output = Calculation<Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::mul(self, rhs)
     }
 }
 
-impl<T: Calculable<Length>> std::ops::Div<T> for Length {
-    type Output = Calculation<Length, Length, T>;
-    fn div(self, rhs: T) -> Self::Output {
+impl<Rhs> std::ops::Div<Rhs> for Length {
+    type Output = Calculation<Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::div(self, rhs)
     }
 }

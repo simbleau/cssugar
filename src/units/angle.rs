@@ -10,8 +10,6 @@ pub enum Angle {
     Percent(f64),
 }
 
-impl Calculable<Angle> for Angle {}
-
 impl std::fmt::Display for Angle {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -24,30 +22,34 @@ impl std::fmt::Display for Angle {
     }
 }
 
-impl std::ops::Add for Angle {
-    type Output = Calculation<Angle, Angle, Angle>;
-    fn add(self, rhs: Self) -> Self::Output {
+impl Calculable for Angle {
+    type Unit = Angle;
+}
+
+impl<Rhs> std::ops::Add<Rhs> for Angle {
+    type Output = Calculation<Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::add(self, rhs)
     }
 }
 
-impl std::ops::Sub for Angle {
-    type Output = Calculation<Angle, Angle, Angle>;
-    fn sub(self, rhs: Self) -> Self::Output {
+impl<Rhs> std::ops::Sub<Rhs> for Angle {
+    type Output = Calculation<Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::sub(self, rhs)
     }
 }
 
-impl std::ops::Mul for Angle {
-    type Output = Calculation<Angle, Angle, Angle>;
-    fn mul(self, rhs: Self) -> Self::Output {
+impl<Rhs> std::ops::Mul<Rhs> for Angle {
+    type Output = Calculation<Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::mul(self, rhs)
     }
 }
 
-impl std::ops::Div for Angle {
-    type Output = Calculation<Angle, Angle, Angle>;
-    fn div(self, rhs: Self) -> Self::Output {
+impl<Rhs> std::ops::Div<Rhs> for Angle {
+    type Output = Calculation<Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::div(self, rhs)
     }
 }
