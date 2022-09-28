@@ -12,7 +12,7 @@ pub const MAROON: Color = Color::from_rgb(0x80, 0x00, 0x00);
 pub const RED: Color = Color::from_rgb(0xff, 0x00, 0x00);
 pub const PURPLE: Color = Color::from_rgb(0xff, 0x00, 0x00);
 pub const FUCHSIA: Color = Color::from_rgb(0xff, 0x00, 0x00);
-pub const GREEN: Color = Color::from_rgb(0xff, 0x00, 0x00);
+pub const GREEN: Color = Color::from_rgb(0x00, 0xff, 0x00);
 pub const LIME: Color = Color::from_rgb(0xff, 0x00, 0x00);
 pub const OLIVE: Color = Color::from_rgb(0xff, 0x00, 0x00);
 pub const YELLOW: Color = Color::from_rgb(0xff, 0xff, 0x00);
@@ -162,7 +162,7 @@ pub const REBECCAPURPLE: Color = Color::from_rgb(0x66, 0x33, 0x99);
 
 #[cfg(test)]
 mod tests {
-    use crate::colors::named::*;
+    use crate::colors::*;
     #[test]
     fn test_constants() {
         assert_eq!(WHITE.r, 255);
