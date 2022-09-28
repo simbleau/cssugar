@@ -2,7 +2,7 @@
 
 pub mod colors;
 pub mod dimensions;
-pub mod functions;
+pub mod math;
 
 pub mod prelude {
     pub use crate::colors::*;

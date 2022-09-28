@@ -30,7 +30,7 @@ where
     }
 }
 
-impl<L, R, Rhs> crate::functions::ops::Max<Rhs> for Max<L, R>
+impl<L, R, Rhs> crate::math::ops::Max<Rhs> for Max<L, R>
 where
     L: Maxable,
     R: Maxable<Unit = <L as Maxable>::Unit>,
@@ -44,7 +44,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::{dimensions::*, functions::ops::Max};
+    use crate::{dimensions::*, math::ops::Max};
 
     #[test]
     fn test_display() {

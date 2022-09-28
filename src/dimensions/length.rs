@@ -1,4 +1,4 @@
-use crate::functions::{
+use crate::math::{
     markers::{Calculable, Maxable},
     Calculation, Max,
 };
@@ -50,7 +50,7 @@ impl std::fmt::Display for Length {
     }
 }
 
-impl<Rhs> crate::functions::ops::Max<Rhs> for Length {
+impl<Rhs> crate::math::ops::Max<Rhs> for Length {
     type Output = Max<Self, Rhs>;
     fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
         Max::new(self, rhs)
