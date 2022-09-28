@@ -1,5 +1,4 @@
-use crate::functions::markers::Calculable;
-use crate::functions::Calculation;
+use crate::functions::{markers::Calculable, Calculation};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Time {

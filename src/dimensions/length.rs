@@ -1,5 +1,7 @@
-use crate::functions::markers::Calculable;
-use crate::functions::Calculation;
+use crate::functions::{
+    markers::{Calculable, Maxable},
+    Calculation, Max,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Length {
@@ -24,6 +26,10 @@ impl Calculable for Length {
     type Unit = Length;
 }
 
+impl Maxable for Length {
+    type Unit = Length;
+}
+
 impl std::fmt::Display for Length {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -41,6 +47,13 @@ impl std::fmt::Display for Length {
             Length::In(v) => write!(f, "{}in", v),
             Length::Pt(v) => write!(f, "{}pt", v),
         }
+    }
+}
+
+impl<Rhs> crate::functions::ops::Max<Rhs> for Length {
+    type Output = Max<Self, Rhs>;
+    fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
+        Max::new(self, rhs)
     }
 }
 

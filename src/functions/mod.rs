@@ -1,7 +1,14 @@
 mod calculation;
 pub use calculation::Calculation;
 
-mod calculable;
+mod max;
+pub use max::Max;
+
+pub mod ops;
+
+mod __markers;
 pub(crate) mod markers {
-    pub use super::calculable::Calculable;
+    pub use super::__markers::Calculable;
+    pub use super::__markers::Maxable;
+    pub use super::__markers::Minable;
 }
