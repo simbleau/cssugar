@@ -125,7 +125,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::units::*;
+    use crate::dimensions::*;
 
     #[test]
     fn test_display() {
