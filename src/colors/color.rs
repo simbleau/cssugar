@@ -119,7 +119,8 @@ impl std::fmt::Display for Color {
 
 #[cfg(test)]
 mod tests {
-    use crate::colors::*;
+    use crate::colors::named::*;
+    use crate::colors::Color;
 
     #[test]
     fn test_display() {
