@@ -15,9 +15,9 @@ pub const FUCHSIA: Color = Color::from_rgb(0xff, 0x00, 0x00);
 pub const GREEN: Color = Color::from_rgb(0xff, 0x00, 0x00);
 pub const LIME: Color = Color::from_rgb(0xff, 0x00, 0x00);
 pub const OLIVE: Color = Color::from_rgb(0xff, 0x00, 0x00);
-pub const YELLOW: Color = Color::from_rgb(255, 255, 0);
+pub const YELLOW: Color = Color::from_rgb(0xff, 0xff, 0x00);
 pub const NAVY: Color = Color::from_rgb(0xff, 0x00, 0x00);
-pub const BLUE: Color = Color::from_rgb(0, 0, 255);
+pub const BLUE: Color = Color::from_rgb(0x00, 0x00, 0xff);
 pub const TEAL: Color = Color::from_rgb(0xff, 0x00, 0x00);
 pub const AQUA: Color = Color::from_rgb(0xff, 0x00, 0x00);
 
@@ -155,7 +155,7 @@ pub const VIOLET: Color = Color::from_rgb(0xee, 0x82, 0xee);
 pub const WHEAT: Color = Color::from_rgb(0xf5, 0xde, 0xb3);
 pub const WHITESMOKE: Color = Color::from_rgb(0xf5, 0xf5, 0xf5);
 pub const YELLOWGREEN: Color = Color::from_rgb(0x9a, 0xcd, 0x32);
-pub const TRANSPARENT: Color = Color::from_rgba(0, 0, 0, 0.0);
+pub const TRANSPARENT: Color = Color::from_rgba(0x00, 0x00, 0x00, 0.0);
 
 // CSS Level 4 values (https://drafts.csswg.org/css-color-4/)
 pub const REBECCAPURPLE: Color = Color::from_rgb(0x66, 0x33, 0x99);
