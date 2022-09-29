@@ -1,5 +1,8 @@
-use crate::math::calculation::Operation;
-use crate::math::{markers::Calculable, Calculation};
+use crate::math::{
+    calculation::Operation,
+    markers::{Calculable, Maxable, Minable},
+    Calculation, Max, Min,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Time {
@@ -13,6 +16,14 @@ impl Calculable for Time {
     type Unit = Time;
 }
 
+impl Maxable for Time {
+    type Unit = Time;
+}
+
+impl Minable for Time {
+    type Unit = Time;
+}
+
 impl std::fmt::Display for Time {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -21,6 +32,20 @@ impl std::fmt::Display for Time {
             Time::Percent(v) => write!(f, "{}%", v),
             Time::Duration(v) => write!(f, "{}ms", v.as_millis()),
         }
+    }
+}
+
+impl<Rhs> crate::math::ops::Max<Rhs> for Time {
+    type Output = Max<Self, Rhs>;
+    fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
+        Max::new(self, rhs)
+    }
+}
+
+impl<Rhs> crate::math::ops::Min<Rhs> for Time {
+    type Output = Min<Self, Rhs>;
+    fn gf(self, rhs: Rhs) -> Min<Self, Rhs> {
+        Min::new(self, rhs)
     }
 }
 
@@ -49,5 +74,34 @@ impl<Rhs> std::ops::Div<Rhs> for Time {
     type Output = Calculation<Self, Rhs>;
     fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::new(self, rhs, Operation::Div)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{dimensions::*, math::ops::Max, math::ops::Min};
+
+    #[test]
+    fn test_calc() {
+        let t1 = Time::Seconds(100.);
+        let t2 = Time::Milliseconds(500.);
+        assert_eq!(format!("{}", t1 + t2), "calc(100s + 500ms)");
+        assert_eq!(format!("{}", t1 - t2), "calc(100s - 500ms)");
+        assert_eq!(format!("{}", t1 * t2), "calc(100s * 500ms)");
+        assert_eq!(format!("{}", t1 / t2), "calc(100s / 500ms)");
+    }
+
+    #[test]
+    fn test_max() {
+        let t1 = Time::Seconds(100.);
+        let t2 = Time::Milliseconds(500.);
+        assert_eq!(format!("{}", t1.gg(t2)), "max(100s, 500ms)");
+    }
+
+    #[test]
+    fn test_min() {
+        let t1 = Time::Seconds(100.);
+        let t2 = Time::Milliseconds(500.);
+        assert_eq!(format!("{}", t1.gf(t2)), "min(100s, 500ms)");
     }
 }
