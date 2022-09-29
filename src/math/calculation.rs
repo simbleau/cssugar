@@ -1,7 +1,7 @@
 use super::__markers::Calculable;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum Operation {
+pub(crate) enum Operation {
     Add,
     Sub,
     Mul,
@@ -16,33 +16,8 @@ pub struct Calculation<L, R> {
 }
 
 impl<L, R> Calculation<L, R> {
-    pub(crate) fn add(lhs: L, rhs: R) -> Self {
-        Calculation {
-            lhs,
-            rhs,
-            op: Operation::Add,
-        }
-    }
-    pub(crate) fn sub(lhs: L, rhs: R) -> Self {
-        Calculation {
-            lhs,
-            rhs,
-            op: Operation::Sub,
-        }
-    }
-    pub(crate) fn mul(lhs: L, rhs: R) -> Self {
-        Calculation {
-            lhs,
-            rhs,
-            op: Operation::Mul,
-        }
-    }
-    pub(crate) fn div(lhs: L, rhs: R) -> Self {
-        Calculation {
-            lhs,
-            rhs,
-            op: Operation::Div,
-        }
+    pub(crate) fn new(lhs: L, rhs: R, op: Operation) -> Self {
+        Calculation { lhs, rhs, op }
     }
 }
 
@@ -83,7 +58,7 @@ where
 {
     type Output = Calculation<Self, Rhs>;
     fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
-        Calculation::add(self, rhs)
+        Calculation::new(self, rhs, Operation::Add)
     }
 }
 
@@ -95,7 +70,7 @@ where
 {
     type Output = Calculation<Self, Rhs>;
     fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
-        Calculation::sub(self, rhs)
+        Calculation::new(self, rhs, Operation::Sub)
     }
 }
 
@@ -107,7 +82,7 @@ where
 {
     type Output = Calculation<Self, Rhs>;
     fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
-        Calculation::mul(self, rhs)
+        Calculation::new(self, rhs, Operation::Mul)
     }
 }
 
@@ -119,7 +94,7 @@ where
 {
     type Output = Calculation<Self, Rhs>;
     fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
-        Calculation::div(self, rhs)
+        Calculation::new(self, rhs, Operation::Div)
     }
 }
 

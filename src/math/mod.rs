@@ -1,4 +1,4 @@
-mod calculation;
+pub(crate) mod calculation;
 pub use calculation::Calculation;
 
 mod max;

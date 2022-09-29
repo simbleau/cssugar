@@ -1,4 +1,4 @@
-use crate::math::{markers::Calculable, Calculation};
+use crate::math::{calculation::Operation, markers::Calculable, Calculation};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Angle {
@@ -28,27 +28,27 @@ impl std::fmt::Display for Angle {
 impl<Rhs> std::ops::Add<Rhs> for Angle {
     type Output = Calculation<Self, Rhs>;
     fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
-        Calculation::add(self, rhs)
+        Calculation::new(self, rhs, Operation::Add)
     }
 }
 
 impl<Rhs> std::ops::Sub<Rhs> for Angle {
     type Output = Calculation<Self, Rhs>;
     fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
-        Calculation::sub(self, rhs)
+        Calculation::new(self, rhs, Operation::Sub)
     }
 }
 
 impl<Rhs> std::ops::Mul<Rhs> for Angle {
     type Output = Calculation<Self, Rhs>;
     fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
-        Calculation::mul(self, rhs)
+        Calculation::new(self, rhs, Operation::Mul)
     }
 }
 
 impl<Rhs> std::ops::Div<Rhs> for Angle {
     type Output = Calculation<Self, Rhs>;
     fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
-        Calculation::div(self, rhs)
+        Calculation::new(self, rhs, Operation::Div)
     }
 }
