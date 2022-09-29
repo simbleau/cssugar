@@ -1,4 +1,8 @@
-use crate::math::{calculation::Operation, markers::Calculable, Calculation};
+use crate::math::{
+    calculation::Operation,
+    markers::{Calculable, Maxable, Minable},
+    Calculation, Max, Min,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Angle {
@@ -13,6 +17,14 @@ impl Calculable for Angle {
     type Unit = Angle;
 }
 
+impl Maxable for Angle {
+    type Unit = Angle;
+}
+
+impl Minable for Angle {
+    type Unit = Angle;
+}
+
 impl std::fmt::Display for Angle {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -22,6 +34,20 @@ impl std::fmt::Display for Angle {
             Angle::Turn(v) => write!(f, "{}turn", v),
             Angle::Percent(v) => write!(f, "{}%", v),
         }
+    }
+}
+
+impl<Rhs> crate::math::ops::Max<Rhs> for Angle {
+    type Output = Max<Self, Rhs>;
+    fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
+        Max::new(self, rhs)
+    }
+}
+
+impl<Rhs> crate::math::ops::Min<Rhs> for Angle {
+    type Output = Min<Self, Rhs>;
+    fn gf(self, rhs: Rhs) -> Min<Self, Rhs> {
+        Min::new(self, rhs)
     }
 }
 
@@ -50,5 +76,34 @@ impl<Rhs> std::ops::Div<Rhs> for Angle {
     type Output = Calculation<Self, Rhs>;
     fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::new(self, rhs, Operation::Div)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{dimensions::*, math::ops::Max, math::ops::Min};
+
+    #[test]
+    fn test_calc() {
+        let a1 = Angle::Deg(100.);
+        let a2 = Angle::Percent(50.);
+        assert_eq!(format!("{}", a1 + a2), "calc(100deg + 50%)");
+        assert_eq!(format!("{}", a1 - a2), "calc(100deg - 50%)");
+        assert_eq!(format!("{}", a1 * a2), "calc(100deg * 50%)");
+        assert_eq!(format!("{}", a1 / a2), "calc(100deg / 50%)");
+    }
+
+    #[test]
+    fn test_max() {
+        let a1 = Angle::Deg(100.);
+        let a2 = Angle::Percent(50.);
+        assert_eq!(format!("{}", a1.gg(a2)), "max(100deg, 50%)");
+    }
+
+    #[test]
+    fn test_min() {
+        let a1 = Angle::Deg(100.);
+        let a2 = Angle::Percent(50.);
+        assert_eq!(format!("{}", a1.gf(a2)), "min(100deg, 50%)");
     }
 }
