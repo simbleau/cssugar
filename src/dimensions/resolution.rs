@@ -35,14 +35,14 @@ impl std::fmt::Display for Resolution {
 
 impl<Rhs> crate::math::ops::Max<Rhs> for Resolution {
     type Output = Max<Self, Rhs>;
-    fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
+    fn max(self, rhs: Rhs) -> Max<Self, Rhs> {
         Max::new(self, rhs)
     }
 }
 
 impl<Rhs> crate::math::ops::Min<Rhs> for Resolution {
     type Output = Min<Self, Rhs>;
-    fn gf(self, rhs: Rhs) -> Min<Self, Rhs> {
+    fn min(self, rhs: Rhs) -> Min<Self, Rhs> {
         Min::new(self, rhs)
     }
 }
@@ -93,13 +93,13 @@ mod tests {
     fn test_max() {
         let r1 = Resolution::Dpi(100.);
         let r2 = Resolution::Dpcm(50.);
-        assert_eq!(format!("{}", r1.gg(r2)), "max(100dpi, 50dpcm)");
+        assert_eq!(format!("{}", r1.max(r2)), "max(100dpi, 50dpcm)");
     }
 
     #[test]
     fn test_min() {
         let r1 = Resolution::Dpi(100.);
         let r2 = Resolution::Dpcm(50.);
-        assert_eq!(format!("{}", r1.gf(r2)), "min(100dpi, 50dpcm)");
+        assert_eq!(format!("{}", r1.min(r2)), "min(100dpi, 50dpcm)");
     }
 }

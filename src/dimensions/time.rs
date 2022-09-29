@@ -37,14 +37,14 @@ impl std::fmt::Display for Time {
 
 impl<Rhs> crate::math::ops::Max<Rhs> for Time {
     type Output = Max<Self, Rhs>;
-    fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
+    fn max(self, rhs: Rhs) -> Max<Self, Rhs> {
         Max::new(self, rhs)
     }
 }
 
 impl<Rhs> crate::math::ops::Min<Rhs> for Time {
     type Output = Min<Self, Rhs>;
-    fn gf(self, rhs: Rhs) -> Min<Self, Rhs> {
+    fn min(self, rhs: Rhs) -> Min<Self, Rhs> {
         Min::new(self, rhs)
     }
 }
@@ -95,13 +95,13 @@ mod tests {
     fn test_max() {
         let t1 = Time::Seconds(100.);
         let t2 = Time::Milliseconds(500.);
-        assert_eq!(format!("{}", t1.gg(t2)), "max(100s, 500ms)");
+        assert_eq!(format!("{}", t1.max(t2)), "max(100s, 500ms)");
     }
 
     #[test]
     fn test_min() {
         let t1 = Time::Seconds(100.);
         let t2 = Time::Milliseconds(500.);
-        assert_eq!(format!("{}", t1.gf(t2)), "min(100s, 500ms)");
+        assert_eq!(format!("{}", t1.min(t2)), "min(100s, 500ms)");
     }
 }

@@ -37,7 +37,7 @@ where
     Rhs: Minable<Unit = <L as Minable>::Unit>,
 {
     type Output = Min<Self, Rhs>;
-    fn gf(self, rhs: Rhs) -> Min<Self, Rhs> {
+    fn min(self, rhs: Rhs) -> Min<Self, Rhs> {
         Min::new(self, rhs)
     }
 }
@@ -50,7 +50,7 @@ mod tests {
     fn test_display() {
         let l1 = Length::Vw(100.);
         let l2 = Length::Px(300.);
-        assert_eq!(format!("{}", l1.gf(l2)), "min(100vw, 300px)");
+        assert_eq!(format!("{}", l1.min(l2)), "min(100vw, 300px)");
     }
 
     #[test]
@@ -60,7 +60,7 @@ mod tests {
         let l3 = Length::In(3.);
 
         assert_eq!(
-            format!("{}", l1.gf(l2).gf(l3)),
+            format!("{}", l1.min(l2).min(l3)),
             "min(min(100vw, 300px), 3in)"
         );
     }

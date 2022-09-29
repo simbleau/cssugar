@@ -57,14 +57,14 @@ impl std::fmt::Display for Length {
 
 impl<Rhs> crate::math::ops::Max<Rhs> for Length {
     type Output = Max<Self, Rhs>;
-    fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
+    fn max(self, rhs: Rhs) -> Max<Self, Rhs> {
         Max::new(self, rhs)
     }
 }
 
 impl<Rhs> crate::math::ops::Min<Rhs> for Length {
     type Output = Min<Self, Rhs>;
-    fn gf(self, rhs: Rhs) -> Min<Self, Rhs> {
+    fn min(self, rhs: Rhs) -> Min<Self, Rhs> {
         Min::new(self, rhs)
     }
 }
@@ -115,13 +115,13 @@ mod tests {
     fn test_max() {
         let l1 = Length::Vw(100.);
         let l2 = Length::Px(300.);
-        assert_eq!(format!("{}", l1.gg(l2)), "max(100vw, 300px)");
+        assert_eq!(format!("{}", l1.max(l2)), "max(100vw, 300px)");
     }
 
     #[test]
     fn test_min() {
         let l1 = Length::Vw(100.);
         let l2 = Length::Px(300.);
-        assert_eq!(format!("{}", l1.gf(l2)), "min(100vw, 300px)");
+        assert_eq!(format!("{}", l1.min(l2)), "min(100vw, 300px)");
     }
 }

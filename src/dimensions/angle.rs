@@ -39,14 +39,14 @@ impl std::fmt::Display for Angle {
 
 impl<Rhs> crate::math::ops::Max<Rhs> for Angle {
     type Output = Max<Self, Rhs>;
-    fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
+    fn max(self, rhs: Rhs) -> Max<Self, Rhs> {
         Max::new(self, rhs)
     }
 }
 
 impl<Rhs> crate::math::ops::Min<Rhs> for Angle {
     type Output = Min<Self, Rhs>;
-    fn gf(self, rhs: Rhs) -> Min<Self, Rhs> {
+    fn min(self, rhs: Rhs) -> Min<Self, Rhs> {
         Min::new(self, rhs)
     }
 }
@@ -97,13 +97,13 @@ mod tests {
     fn test_max() {
         let a1 = Angle::Deg(100.);
         let a2 = Angle::Percent(50.);
-        assert_eq!(format!("{}", a1.gg(a2)), "max(100deg, 50%)");
+        assert_eq!(format!("{}", a1.max(a2)), "max(100deg, 50%)");
     }
 
     #[test]
     fn test_min() {
         let a1 = Angle::Deg(100.);
         let a2 = Angle::Percent(50.);
-        assert_eq!(format!("{}", a1.gf(a2)), "min(100deg, 50%)");
+        assert_eq!(format!("{}", a1.min(a2)), "min(100deg, 50%)");
     }
 }

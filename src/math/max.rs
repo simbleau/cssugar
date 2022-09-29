@@ -37,7 +37,7 @@ where
     Rhs: Maxable<Unit = <L as Maxable>::Unit>,
 {
     type Output = Max<Self, Rhs>;
-    fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
+    fn max(self, rhs: Rhs) -> Max<Self, Rhs> {
         Max::new(self, rhs)
     }
 }
@@ -50,7 +50,7 @@ mod tests {
     fn test_display() {
         let l1 = Length::Vw(100.);
         let l2 = Length::Px(300.);
-        assert_eq!(format!("{}", l1.gg(l2)), "max(100vw, 300px)");
+        assert_eq!(format!("{}", l1.max(l2)), "max(100vw, 300px)");
     }
 
     #[test]
@@ -60,7 +60,7 @@ mod tests {
         let l3 = Length::In(3.);
 
         assert_eq!(
-            format!("{}", l1.gg(l2).gg(l3)),
+            format!("{}", l1.max(l2).max(l3)),
             "max(max(100vw, 300px), 3in)"
         );
     }
