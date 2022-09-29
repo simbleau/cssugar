@@ -96,3 +96,32 @@ impl<Rhs> std::ops::Div<Rhs> for Length {
         Calculation::new(self, rhs, Operation::Div)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{dimensions::*, math::ops::Max, math::ops::Min};
+
+    #[test]
+    fn test_calc() {
+        let l1 = Length::Vw(100.);
+        let l2 = Length::Px(300.);
+        assert_eq!(format!("{}", l1 + l2), "calc(100vw + 300px)");
+        assert_eq!(format!("{}", l1 - l2), "calc(100vw - 300px)");
+        assert_eq!(format!("{}", l1 * l2), "calc(100vw * 300px)");
+        assert_eq!(format!("{}", l1 / l2), "calc(100vw / 300px)");
+    }
+
+    #[test]
+    fn test_max() {
+        let l1 = Length::Vw(100.);
+        let l2 = Length::Px(300.);
+        assert_eq!(format!("{}", l1.gg(l2)), "max(100vw, 300px)");
+    }
+
+    #[test]
+    fn test_min() {
+        let l1 = Length::Vw(100.);
+        let l2 = Length::Px(300.);
+        assert_eq!(format!("{}", l1.gf(l2)), "min(100vw, 300px)");
+    }
+}

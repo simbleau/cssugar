@@ -103,23 +103,34 @@ mod tests {
     use crate::dimensions::*;
 
     #[test]
-    fn test_display() {
-        let l1 = Length::Vw(100.);
-        let l2 = Length::Px(300.);
-        assert_eq!(format!("{}", l1 + l2), "calc(100vw + 300px)");
-        assert_eq!(format!("{}", l1 - l2), "calc(100vw - 300px)");
-        assert_eq!(format!("{}", l1 * l2), "calc(100vw * 300px)");
-        assert_eq!(format!("{}", l1 / l2), "calc(100vw / 300px)");
+    fn test_calc() {
+        let c1 = Length::Vw(100.);
+        let c2 = Length::Vw(100.) + Length::Px(300.);
+        assert_eq!(format!("{}", c1 + c2), "calc(100vw + calc(100vw + 300px))");
+        assert_eq!(format!("{}", c1 - c2), "calc(100vw - calc(100vw + 300px))");
+        assert_eq!(format!("{}", c1 * c2), "calc(100vw * calc(100vw + 300px))");
+        assert_eq!(format!("{}", c1 / c2), "calc(100vw / calc(100vw + 300px))");
     }
 
     #[test]
-    fn test_composition() {
-        let l1 = Length::Vw(100.);
-        let l2 = Length::Px(300.);
-        let l3 = Length::In(3.);
+    fn test_calc2() {
+        let c1 = Length::Vw(100.) + Length::Px(300.);
+        let c2 = Length::Vw(100.) + Length::Px(300.);
         assert_eq!(
-            format!("{}", l1 + l2 + l3),
-            "calc(calc(100vw + 300px) + 3in)"
+            format!("{}", c1 + c2),
+            "calc(calc(100vw + 300px) + calc(100vw + 300px))"
+        );
+        assert_eq!(
+            format!("{}", c1 - c2),
+            "calc(calc(100vw + 300px) - calc(100vw + 300px))"
+        );
+        assert_eq!(
+            format!("{}", c1 * c2),
+            "calc(calc(100vw + 300px) * calc(100vw + 300px))"
+        );
+        assert_eq!(
+            format!("{}", c1 / c2),
+            "calc(calc(100vw + 300px) / calc(100vw + 300px))"
         );
     }
 }
