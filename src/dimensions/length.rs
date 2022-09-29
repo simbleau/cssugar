@@ -1,6 +1,6 @@
 use crate::math::{
-    markers::{Calculable, Maxable},
-    Calculation, Max,
+    markers::{Calculable, Maxable, Minable},
+    Calculation, Max, Min,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -30,6 +30,10 @@ impl Maxable for Length {
     type Unit = Length;
 }
 
+impl Minable for Length {
+    type Unit = Length;
+}
+
 impl std::fmt::Display for Length {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -54,6 +58,13 @@ impl<Rhs> crate::math::ops::Max<Rhs> for Length {
     type Output = Max<Self, Rhs>;
     fn gg(self, rhs: Rhs) -> Max<Self, Rhs> {
         Max::new(self, rhs)
+    }
+}
+
+impl<Rhs> crate::math::ops::Min<Rhs> for Length {
+    type Output = Min<Self, Rhs>;
+    fn gf(self, rhs: Rhs) -> Min<Self, Rhs> {
+        Min::new(self, rhs)
     }
 }
 
