@@ -55,4 +55,17 @@ TODO
 
 ## Functions
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#functions)
-TODO
+```rs
+use cssugar::colors::{Color, BLACK};
+
+#[function_component(SizedButton)]
+pub fn sized_button() -> Html {
+    let color = Color::rgb(255, 0, 0).blend(BLACK);
+    let label_css = format!("color: ${color};");
+    html! {
+        <label style={label_css}>{ "I am dark red!" }</label>
+    }
+}
+```
+Expected Output:
+> `<label style="color: rgba(128, 0, 0, 1.0);">I am dark red!</label>`

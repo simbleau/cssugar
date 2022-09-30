@@ -1,6 +1,6 @@
 use crate::math::{
     calculation::Operation,
-    markers::{Calculable, Maxable, Minable},
+    markers::{Addable, Maxable, Minable, Scalable},
     Calculation, Max, Min,
 };
 
@@ -11,7 +11,11 @@ pub enum Resolution {
     Dppx(f64),
 }
 
-impl Calculable for Resolution {
+impl Addable for Resolution {
+    type Unit = Resolution;
+}
+
+impl Scalable for Resolution {
     type Unit = Resolution;
 }
 
@@ -47,28 +51,40 @@ impl<Rhs> crate::math::ops::Min<Rhs> for Resolution {
     }
 }
 
-impl<Rhs> std::ops::Add<Rhs> for Resolution {
+impl<Rhs> std::ops::Add<Rhs> for Resolution
+where
+    Rhs: Addable,
+{
     type Output = Calculation<Self, Rhs>;
     fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::new(self, rhs, Operation::Add)
     }
 }
 
-impl<Rhs> std::ops::Sub<Rhs> for Resolution {
+impl<Rhs> std::ops::Sub<Rhs> for Resolution
+where
+    Rhs: Addable,
+{
     type Output = Calculation<Self, Rhs>;
     fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::new(self, rhs, Operation::Sub)
     }
 }
 
-impl<Rhs> std::ops::Mul<Rhs> for Resolution {
+impl<Rhs> std::ops::Mul<Rhs> for Resolution
+where
+    Rhs: Scalable,
+{
     type Output = Calculation<Self, Rhs>;
     fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::new(self, rhs, Operation::Mul)
     }
 }
 
-impl<Rhs> std::ops::Div<Rhs> for Resolution {
+impl<Rhs> std::ops::Div<Rhs> for Resolution
+where
+    Rhs: Scalable,
+{
     type Output = Calculation<Self, Rhs>;
     fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
         Calculation::new(self, rhs, Operation::Div)
