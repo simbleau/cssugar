@@ -1,7 +1,7 @@
 use crate::math::markers::Scalable;
 
-impl<T> Scalable<T> for f64 {}
-impl<T> Scalable<T> for f32 {}
+impl<Unit> Scalable<Unit> for f64 {}
+impl<Unit> Scalable<Unit> for f32 {}
 
 #[cfg(test)]
 mod tests {

@@ -1,9 +1,9 @@
 use crate::math::markers::Scalable;
 
-impl<T> Scalable<T> for i8 {}
-impl<T> Scalable<T> for i16 {}
-impl<T> Scalable<T> for i32 {}
-impl<T> Scalable<T> for i128 {}
+impl<Unit> Scalable<Unit> for i8 {}
+impl<Unit> Scalable<Unit> for i16 {}
+impl<Unit> Scalable<Unit> for i32 {}
+impl<Unit> Scalable<Unit> for i128 {}
 
 #[cfg(test)]
 mod tests {
