@@ -11,9 +11,19 @@ mod tests {
 
     #[test]
     fn test_composition() {
-        let c1 = Length::Vw(100.) + Length::In(2.5);
-        let i1 = 32;
-        assert_eq!(format!("{}", c1 * i1), "calc(calc(100vw + 2.5in) * 32)");
+        let i1 = 10;
+
+        let lc1 = Length::Vw(100.) + Length::In(2.5);
+        assert_eq!(format!("{}", lc1 * i1), "calc(calc(100vw + 2.5in) * 10)");
+
+        let ac1 = Angle::Percent(50.) + Angle::Deg(180.);
+        assert_eq!(format!("{}", ac1 * i1), "calc(calc(50% + 180deg) * 10)");
+
+        let rc1 = Resolution::Dpi(50.) + Resolution::Dppx(100.);
+        assert_eq!(format!("{}", rc1 * i1), "calc(calc(50dpi + 100dppx) * 10)");
+
+        let tc1 = Time::Seconds(5.) + Time::Milliseconds(500.);
+        assert_eq!(format!("{}", tc1 * i1), "calc(calc(5s + 500ms) * 10)");
     }
 
     #[test]
