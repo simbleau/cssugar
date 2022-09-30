@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 use super::__markers::{Addable, Scalable};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -9,35 +11,39 @@ pub(crate) enum Operation {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Calculation<L, R> {
+pub struct Calculation<A, L, R> {
     lhs: L,
     rhs: R,
     op: Operation,
+    _pd: PhantomData<A>,
 }
 
-impl<L, R> Calculation<L, R> {
+impl<A, L, R> Calculation<A, L, R> {
     pub(crate) fn new(lhs: L, rhs: R, op: Operation) -> Self {
-        Calculation { lhs, rhs, op }
+        Calculation {
+            lhs,
+            rhs,
+            op,
+            _pd: PhantomData,
+        }
     }
 }
 
-impl<L, R> Addable for Calculation<L, R>
+impl<A, L, R> Addable<A> for Calculation<A, L, R>
 where
-    L: Addable,
-    R: Addable<Unit = <L as Addable>::Unit>,
+    L: Addable<A>,
+    R: Addable<A>,
 {
-    type Unit = <L as Addable>::Unit;
 }
 
-impl<L, R> Scalable for Calculation<L, R>
+impl<A, L, R> Scalable<A> for Calculation<A, L, R>
 where
-    L: Scalable,
-    R: Scalable<Unit = <L as Scalable>::Unit>,
+    L: Scalable<A>,
+    R: Scalable<A>,
 {
-    type Unit = <L as Scalable>::Unit;
 }
 
-impl<L, R> std::fmt::Display for Calculation<L, R>
+impl<A, L, R> std::fmt::Display for Calculation<A, L, R>
 where
     L: std::fmt::Display,
     R: std::fmt::Display,
@@ -58,50 +64,50 @@ where
     }
 }
 
-impl<L, R, Rhs> std::ops::Add<Rhs> for Calculation<L, R>
+impl<A, L, R, Rhs> std::ops::Add<Rhs> for Calculation<A, L, R>
 where
-    L: Addable,
-    R: Addable<Unit = <L as Addable>::Unit>,
-    Rhs: Addable<Unit = <L as Addable>::Unit>,
+    L: Addable<A>,
+    R: Addable<A>,
+    Rhs: Addable<A>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<A, Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Calculation<A, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Add)
     }
 }
 
-impl<L, R, Rhs> std::ops::Sub<Rhs> for Calculation<L, R>
+impl<A, L, R, Rhs> std::ops::Sub<Rhs> for Calculation<A, L, R>
 where
-    L: Addable,
-    R: Addable<Unit = <L as Addable>::Unit>,
-    Rhs: Addable<Unit = <L as Addable>::Unit>,
+    L: Addable<A>,
+    R: Addable<A>,
+    Rhs: Addable<A>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<A, Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Calculation<A, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Sub)
     }
 }
 
-impl<L, R, Rhs> std::ops::Mul<Rhs> for Calculation<L, R>
+impl<A, L, R, Rhs> std::ops::Mul<Rhs> for Calculation<A, L, R>
 where
-    L: Scalable,
-    R: Scalable<Unit = <L as Scalable>::Unit>,
-    Rhs: Scalable<Unit = <L as Scalable>::Unit>,
+    L: Scalable<A>,
+    R: Scalable<A>,
+    Rhs: Scalable<A>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<A, Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Calculation<A, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Mul)
     }
 }
 
-impl<L, R, Rhs> std::ops::Div<Rhs> for Calculation<L, R>
+impl<A, L, R, Rhs> std::ops::Div<Rhs> for Calculation<A, L, R>
 where
-    L: Scalable,
-    R: Scalable<Unit = <L as Scalable>::Unit>,
-    Rhs: Scalable<Unit = <L as Scalable>::Unit>,
+    L: Scalable<A>,
+    R: Scalable<A>,
+    Rhs: Scalable<A>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<A, Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Calculation<A, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Div)
     }
 }

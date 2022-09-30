@@ -12,13 +12,8 @@ pub enum Time {
     Duration(std::time::Duration),
 }
 
-impl Addable for Time {
-    type Unit = Time;
-}
-
-impl Scalable for Time {
-    type Unit = Time;
-}
+impl Addable<Time> for Time {}
+impl Scalable<Time> for Time {}
 
 impl Maxable for Time {
     type Unit = Time;
@@ -55,40 +50,40 @@ impl<Rhs> crate::math::ops::Min<Rhs> for Time {
 
 impl<Rhs> std::ops::Add<Rhs> for Time
 where
-    Rhs: Addable,
+    Rhs: Addable<Time>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Time, Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Calculation<Time, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Add)
     }
 }
 
 impl<Rhs> std::ops::Sub<Rhs> for Time
 where
-    Rhs: Addable,
+    Rhs: Addable<Time>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Time, Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Calculation<Time, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Sub)
     }
 }
 
 impl<Rhs> std::ops::Mul<Rhs> for Time
 where
-    Rhs: Scalable,
+    Rhs: Scalable<Time>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Time, Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Calculation<Time, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Mul)
     }
 }
 
 impl<Rhs> std::ops::Div<Rhs> for Time
 where
-    Rhs: Scalable,
+    Rhs: Scalable<Time>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Time, Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Calculation<Time, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Div)
     }
 }

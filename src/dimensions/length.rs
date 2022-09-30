@@ -23,13 +23,8 @@ pub enum Length {
     Pt(f64),
 }
 
-impl Addable for Length {
-    type Unit = Length;
-}
-
-impl Scalable for Length {
-    type Unit = Length;
-}
+impl Addable<Length> for Length {}
+impl Scalable<Length> for Length {}
 
 impl Maxable for Length {
     type Unit = Length;
@@ -75,40 +70,40 @@ impl<Rhs> crate::math::ops::Min<Rhs> for Length {
 
 impl<Rhs> std::ops::Add<Rhs> for Length
 where
-    Rhs: Addable,
+    Rhs: Addable<Length>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Length, Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Calculation<Length, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Add)
     }
 }
 
 impl<Rhs> std::ops::Sub<Rhs> for Length
 where
-    Rhs: Addable,
+    Rhs: Addable<Length>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Length, Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Calculation<Length, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Sub)
     }
 }
 
 impl<Rhs> std::ops::Mul<Rhs> for Length
 where
-    Rhs: Scalable,
+    Rhs: Scalable<Length>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Length, Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Calculation<Length, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Mul)
     }
 }
 
 impl<Rhs> std::ops::Div<Rhs> for Length
 where
-    Rhs: Scalable,
+    Rhs: Scalable<Length>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Length, Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Calculation<Length, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Div)
     }
 }

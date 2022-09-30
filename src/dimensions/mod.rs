@@ -10,4 +10,5 @@ pub use time::Time;
 mod resolution;
 pub use resolution::Resolution;
 
+mod integer;
 mod number;

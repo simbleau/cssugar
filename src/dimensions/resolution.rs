@@ -11,13 +11,8 @@ pub enum Resolution {
     Dppx(f64),
 }
 
-impl Addable for Resolution {
-    type Unit = Resolution;
-}
-
-impl Scalable for Resolution {
-    type Unit = Resolution;
-}
+impl Addable<Resolution> for Resolution {}
+impl Scalable<Resolution> for Resolution {}
 
 impl Maxable for Resolution {
     type Unit = Resolution;
@@ -53,44 +48,43 @@ impl<Rhs> crate::math::ops::Min<Rhs> for Resolution {
 
 impl<Rhs> std::ops::Add<Rhs> for Resolution
 where
-    Rhs: Addable,
+    Rhs: Addable<Resolution>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn add(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Resolution, Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Calculation<Resolution, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Add)
     }
 }
 
 impl<Rhs> std::ops::Sub<Rhs> for Resolution
 where
-    Rhs: Addable,
+    Rhs: Addable<Resolution>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn sub(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Resolution, Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Calculation<Resolution, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Sub)
     }
 }
 
 impl<Rhs> std::ops::Mul<Rhs> for Resolution
 where
-    Rhs: Scalable,
+    Rhs: Scalable<Resolution>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn mul(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Resolution, Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Calculation<Resolution, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Mul)
     }
 }
 
 impl<Rhs> std::ops::Div<Rhs> for Resolution
 where
-    Rhs: Scalable,
+    Rhs: Scalable<Resolution>,
 {
-    type Output = Calculation<Self, Rhs>;
-    fn div(self, rhs: Rhs) -> Calculation<Self, Rhs> {
+    type Output = Calculation<Resolution, Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Calculation<Resolution, Self, Rhs> {
         Calculation::new(self, rhs, Operation::Div)
     }
 }
-
 #[cfg(test)]
 mod tests {
     use crate::{dimensions::*, math::ops::Max, math::ops::Min};
