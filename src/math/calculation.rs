@@ -114,7 +114,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::dimensions::*;
+    use crate::prelude::*;
 
     #[test]
     fn test_calc() {

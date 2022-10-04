@@ -5,7 +5,7 @@ impl<Unit> Scalable<Unit> for f32 {}
 
 #[cfg(test)]
 mod tests {
-    use crate::dimensions::*;
+    use crate::prelude::*;
 
     #[test]
     fn test_composition() {

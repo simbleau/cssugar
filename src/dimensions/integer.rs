@@ -7,7 +7,7 @@ impl<Unit> Scalable<Unit> for i128 {}
 
 #[cfg(test)]
 mod tests {
-    use crate::dimensions::*;
+    use crate::prelude::*;
 
     #[test]
     fn test_composition() {

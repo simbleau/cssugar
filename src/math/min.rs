@@ -44,7 +44,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::{dimensions::*, math::ops::Min};
+    use crate::prelude::*;
 
     #[test]
     fn test_display() {

@@ -1,4 +1,4 @@
-use super::ops::{Max, Min};
+use crate::math::ops::{Max, Min};
 use std::{fmt::Display, ops::Add, ops::Div, ops::Mul, ops::Sub};
 
 pub trait Addable<T>: Display + Sized + Add + Sub {}
