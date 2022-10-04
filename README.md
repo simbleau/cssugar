@@ -12,7 +12,7 @@ Read more:
 ## Numbers, lengths, and percentages
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numbers_lengths_and_percentages)
 ```rs
-use cssugar::units::{Px, Vw};
+use cssugar::prelude::*;
 
 #[function_component(SizedButton)]
 pub fn sized_button() -> Html {
@@ -30,7 +30,7 @@ Expected Output:
 ## Colors
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#color)
 ```rs
-use cssugar::colors::{Color, BLACK};
+use cssugar::prelude::*;
 
 #[function_component(SizedButton)]
 pub fn sized_button() -> Html {
@@ -48,24 +48,21 @@ Expected Output:
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#images)
 TODO
 
-## Strings and Identifiers
-[Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#strings_and_identifiers)
-TODO
-
-
 ## Functions
 [Read more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#functions)
 ```rs
-use cssugar::colors::{Color, BLACK};
+use cssugar::prelude::*;
 
 #[function_component(SizedButton)]
 pub fn sized_button() -> Html {
-    let color = Color::rgb(255, 0, 0).blend(BLACK);
-    let label_css = format!("color: ${color};");
+    let l1 = Length::Vw(100.);
+    let l2 = Length::Px(300.);
+    let size = l1.min(l2);
+    let button_css = format!("width: ${size};");
     html! {
-        <label style={label_css}>{ "I am dark red!" }</label>
+        <button style={button_css}>{ "CLICK ME!" }</button>
     }
 }
 ```
 Expected Output:
-> `<label style="color: rgba(128, 0, 0, 1.0);">I am dark red!</label>`
+> `<button style="width: min(100vw, 300px);">CLICK ME!</button>`
