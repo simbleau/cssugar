@@ -1,6 +1,5 @@
+use crate::math::__markers::{Addable, Scalable};
 use std::marker::PhantomData;
-
-use super::__markers::{Addable, Scalable};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub(crate) enum Operation {
