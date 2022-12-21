@@ -53,8 +53,8 @@ impl Color {
             (b_prime + m) * 255.0,
         );
         Self {
-            r: r as u8,
-            g: g as u8,
+            r: r.max(0.0) as u8,
+            g: g.max(0.0) as u8,
             b: b as u8,
             a,
         }
@@ -63,20 +63,18 @@ impl Color {
     /// Lighten the color by a percentage. 1.0 will always result in white, 0.0
     /// will result in no color change.
     pub fn lighten(&self, a: f32) -> Self {
-        let adjustment = (255.0 * a) as u8;
         Self {
-            r: { (self.r + adjustment).clamp(0, 255) },
-            g: { (self.g + adjustment).clamp(0, 255) },
-            b: { (self.b + adjustment).clamp(0, 255) },
+            r: { (self.r as f32 + 255. * a).clamp(0., 255.) as u8 },
+            g: { (self.g as f32 + 255. * a).clamp(0., 255.) as u8 },
+            b: { (self.b as f32 + 255. * a).clamp(0., 255.) as u8 },
             a: self.a,
         }
     }
 
     pub fn set_lighter(&mut self, a: f32) -> Self {
-        let adjustment = (255.0 * a) as u8;
-        self.r = (self.r + adjustment).clamp(0, 255);
-        self.g = (self.g + adjustment).clamp(0, 255);
-        self.b = (self.b + adjustment).clamp(0, 255);
+        self.r = (self.r as f32 + 255. * a).clamp(0., 255.) as u8;
+        self.g = (self.g as f32 + 255. * a).clamp(0., 255.) as u8;
+        self.b = (self.b as f32 + 255. * a).clamp(0., 255.) as u8;
         self.a = self.a;
         *self
     }
