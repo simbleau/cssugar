@@ -7,30 +7,30 @@ pub struct Color {
 }
 
 impl Color {
-    pub const fn from_rgb(r: u8, g: u8, b: u8) -> Color {
+    pub const fn from_rgb(r: u8, g: u8, b: u8) -> Self {
         Self::from_rgba(r, g, b, 1.0)
     }
 
-    pub const fn from_rgba(r: u8, g: u8, b: u8, a: f32) -> Color {
-        Color { r, g, b, a }
+    pub const fn from_rgba(r: u8, g: u8, b: u8, a: f32) -> Self {
+        Self { r, g, b, a }
     }
 
-    pub const fn from_hex24(h: u32) -> Color {
+    pub const fn from_hex24(h: u32) -> Self {
         let r = (h >> 16 & 0xff) as u8;
         let g = (h >> 8 & 0xff) as u8;
         let b = (h & 0xff) as u8;
         Self::from_rgba(r, g, b, 1.0)
     }
 
-    pub fn from_hex32(h: u32) -> Color {
+    pub fn from_hex32(h: u32) -> Self {
         Self::from_hex24(h >> 8).set_alpha((h & 0xff) as f32 / 255.0)
     }
 
-    pub fn from_hsl(h: i32, s: f32, l: f32) -> Color {
+    pub fn from_hsl(h: i32, s: f32, l: f32) -> Self {
         Self::from_hsla(h, s, l, 1.0)
     }
 
-    pub fn from_hsla(h: i32, s: f32, l: f32, a: f32) -> Color {
+    pub fn from_hsla(h: i32, s: f32, l: f32, a: f32) -> Self {
         let c = (1.0 - (2.0 * l - 1.0).abs()) * s;
         let x = c * (1 - ((h / 60) % 2 - 1).abs()) as f32;
         let m = l - c / 2.0;
@@ -52,7 +52,7 @@ impl Color {
             (g_prime + m) * 255.0,
             (b_prime + m) * 255.0,
         );
-        Color {
+        Self {
             r: r as u8,
             g: g as u8,
             b: b as u8,
@@ -62,9 +62,9 @@ impl Color {
 
     /// Lighten the color by a percentage. 1.0 will always result in white, 0.0
     /// will result in no color change.
-    pub fn lighten(&self, a: f32) -> Color {
+    pub fn lighten(&self, a: f32) -> Self {
         let adjustment = (255.0 * a) as u8;
-        Color {
+        Self {
             r: { (self.r + adjustment).clamp(0, 255) },
             g: { (self.g + adjustment).clamp(0, 255) },
             b: { (self.b + adjustment).clamp(0, 255) },
@@ -72,10 +72,23 @@ impl Color {
         }
     }
 
+    pub fn set_lighter(&mut self, a: f32) -> Self {
+        let adjustment = (255.0 * a) as u8;
+        self.r = (self.r + adjustment).clamp(0, 255);
+        self.g = (self.g + adjustment).clamp(0, 255);
+        self.b = (self.b + adjustment).clamp(0, 255);
+        self.a = self.a;
+        *self
+    }
+
     /// Darken the color by a percentage. 1.0 will always result in black, 0.0
     /// will result in no color change.
-    pub fn darken(&self, a: f32) -> Color {
+    pub fn darken(&self, a: f32) -> Self {
         self.lighten(-a)
+    }
+
+    pub fn set_darker(&mut self, a: f32) -> Self {
+        self.set_lighter(-a)
     }
 
     pub fn set_alpha(&mut self, a: f32) -> Self {
@@ -83,9 +96,27 @@ impl Color {
         *self
     }
 
+    pub fn alpha(&self, a: f32) -> Self {
+        Self {
+            r: self.r,
+            g: self.g,
+            b: self.b,
+            a,
+        }
+    }
+
     pub fn set_red(&mut self, r: u8) -> Self {
         self.r = r;
         *self
+    }
+
+    pub fn red(&self, r: u8) -> Self {
+        Self {
+            r,
+            g: self.g,
+            b: self.b,
+            a: self.a,
+        }
     }
 
     pub fn set_green(&mut self, g: u8) -> Self {
@@ -93,20 +124,50 @@ impl Color {
         *self
     }
 
+    pub fn green(&self, g: u8) -> Self {
+        Self {
+            r: self.r,
+            g,
+            b: self.b,
+            a: self.a,
+        }
+    }
+
     pub fn set_blue(&mut self, b: u8) -> Self {
         self.b = b;
         *self
     }
 
-    pub fn set_hue(_h: f32) -> Self {
+    pub fn blue(&self, b: u8) -> Self {
+        Self {
+            r: self.r,
+            g: self.g,
+            b,
+            a: self.a,
+        }
+    }
+
+    pub fn set_hue(&mut self, _h: f32) -> Self {
         todo!()
     }
 
-    pub fn set_saturation(_s: f32) -> Self {
+    pub fn hue(&self, _h: f32) -> Self {
         todo!()
     }
 
-    pub fn set_lightness(_l: f32) -> Self {
+    pub fn set_saturation(&mut self, _s: f32) -> Self {
+        todo!()
+    }
+
+    pub fn saturation(&self, _s: f32) -> Self {
+        todo!()
+    }
+
+    pub fn set_lightness(&mut self, _l: f32) -> Self {
+        todo!()
+    }
+
+    pub fn lightness(&self, _l: f32) -> Self {
         todo!()
     }
 }
