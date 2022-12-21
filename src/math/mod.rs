@@ -1,10 +1,10 @@
 pub(crate) mod calculation;
 pub use calculation::Calculation;
 
-mod max;
+pub(crate) mod max;
 pub use max::Max;
 
-mod min;
+pub(crate) mod min;
 pub use min::Min;
 
 pub mod ops;
