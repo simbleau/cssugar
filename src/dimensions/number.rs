@@ -1,7 +1,10 @@
-use crate::math::markers::Scalable;
+use crate::math::markers::{Calculable, Scalable};
 
-impl<Unit> Scalable<Unit> for f64 {}
 impl<Unit> Scalable<Unit> for f32 {}
+impl<Unit> Scalable<Unit> for f64 {}
+
+impl<Unit> Calculable<Unit> for f32 {}
+impl<Unit> Calculable<Unit> for f64 {}
 
 #[cfg(test)]
 mod tests {

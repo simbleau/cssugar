@@ -1,6 +1,6 @@
 use crate::math::{
     calculation::Operation,
-    markers::{Addable, Maxable, Minable, Scalable},
+    markers::{Addable, Calculable, Maxable, Minable, Scalable},
     Calculation, Max, Min,
 };
 
@@ -11,6 +11,7 @@ pub enum Resolution {
     Dppx(f64),
 }
 
+impl Calculable<Resolution> for Resolution {}
 impl Addable<Resolution> for Resolution {}
 impl Scalable<Resolution> for Resolution {}
 

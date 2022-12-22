@@ -1,6 +1,6 @@
 use crate::math::{
     calculation::Operation,
-    markers::{Addable, Maxable, Minable, Scalable},
+    markers::{Addable, Calculable, Maxable, Minable, Scalable},
     Calculation, Max, Min,
 };
 
@@ -13,6 +13,7 @@ pub enum Angle {
     Percent(f64),
 }
 
+impl Calculable<Angle> for Angle {}
 impl Addable<Angle> for Angle {}
 impl Scalable<Angle> for Angle {}
 

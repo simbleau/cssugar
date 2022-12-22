@@ -1,4 +1,4 @@
-use crate::math::__markers::{Addable, Scalable};
+use crate::math::__markers::{Addable, Calculable, Scalable};
 use std::marker::PhantomData;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -28,10 +28,17 @@ impl<Unit, L, R> Calculation<Unit, L, R> {
     }
 }
 
+impl<Unit, L, R> Calculable<Unit> for Calculation<Unit, L, R>
+where
+    L: Calculable<Unit>,
+    R: Calculable<Unit>,
+{
+}
+
 impl<Unit, L, R> Addable<Unit> for Calculation<Unit, L, R>
 where
-    L: Addable<Unit>,
-    R: Addable<Unit>,
+    L: Calculable<Unit>,
+    R: Calculable<Unit>,
 {
 }
 
@@ -65,8 +72,6 @@ where
 
 impl<Unit, L, R, Rhs> std::ops::Add<Rhs> for Calculation<Unit, L, R>
 where
-    L: Addable<Unit>,
-    R: Addable<Unit>,
     Rhs: Addable<Unit>,
 {
     type Output = Calculation<Unit, Self, Rhs>;
@@ -77,8 +82,6 @@ where
 
 impl<Unit, L, R, Rhs> std::ops::Sub<Rhs> for Calculation<Unit, L, R>
 where
-    L: Addable<Unit>,
-    R: Addable<Unit>,
     Rhs: Addable<Unit>,
 {
     type Output = Calculation<Unit, Self, Rhs>;
@@ -89,8 +92,6 @@ where
 
 impl<Unit, L, R, Rhs> std::ops::Mul<Rhs> for Calculation<Unit, L, R>
 where
-    L: Scalable<Unit>,
-    R: Scalable<Unit>,
     Rhs: Scalable<Unit>,
 {
     type Output = Calculation<Unit, Self, Rhs>;
@@ -101,8 +102,6 @@ where
 
 impl<Unit, L, R, Rhs> std::ops::Div<Rhs> for Calculation<Unit, L, R>
 where
-    L: Scalable<Unit>,
-    R: Scalable<Unit>,
     Rhs: Scalable<Unit>,
 {
     type Output = Calculation<Unit, Self, Rhs>;
@@ -144,6 +143,168 @@ mod tests {
         assert_eq!(
             format!("{}", c1 / c2),
             "calc(calc(100vw + 300px) / calc(100vw + 300px))"
+        );
+    }
+
+    #[test]
+    fn test_composition_integer() {
+        let int = 2;
+
+        let lc1 = Length::Vw(100.) + Length::In(2.5);
+        let lc2 = Length::Percent(25.) * int;
+        assert_eq!(
+            format!("{}", lc1 + lc2),
+            "calc(calc(100vw + 2.5in) + calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", lc1 - lc2),
+            "calc(calc(100vw + 2.5in) - calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", lc1 * lc2),
+            "calc(calc(100vw + 2.5in) * calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", lc1 / lc2),
+            "calc(calc(100vw + 2.5in) / calc(25% * 2))"
+        );
+
+        let ac1 = Angle::Percent(50.) + Angle::Deg(180.);
+        let ac2 = Angle::Percent(25.) * int;
+        assert_eq!(
+            format!("{}", ac1 + ac2),
+            "calc(calc(50% + 180deg) + calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", ac1 - ac2),
+            "calc(calc(50% + 180deg) - calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", ac1 * ac2),
+            "calc(calc(50% + 180deg) * calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", ac1 / ac2),
+            "calc(calc(50% + 180deg) / calc(25% * 2))"
+        );
+
+        let rc1 = Resolution::Dpi(50.) + Resolution::Dppx(100.);
+        let rc2 = Resolution::Dpi(25.) * int;
+        assert_eq!(
+            format!("{}", rc1 + rc2),
+            "calc(calc(50dpi + 100dppx) + calc(25dpi * 2))"
+        );
+        assert_eq!(
+            format!("{}", rc1 - rc2),
+            "calc(calc(50dpi + 100dppx) - calc(25dpi * 2))"
+        );
+        assert_eq!(
+            format!("{}", rc1 * rc2),
+            "calc(calc(50dpi + 100dppx) * calc(25dpi * 2))"
+        );
+        assert_eq!(
+            format!("{}", rc1 / rc2),
+            "calc(calc(50dpi + 100dppx) / calc(25dpi * 2))"
+        );
+
+        let tc1 = Time::Seconds(5.) + Time::Milliseconds(500.);
+        let tc2 = Time::Percent(25.) * int;
+        assert_eq!(
+            format!("{}", tc1 + tc2),
+            "calc(calc(5s + 500ms) + calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", tc1 - tc2),
+            "calc(calc(5s + 500ms) - calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", tc1 * tc2),
+            "calc(calc(5s + 500ms) * calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", tc1 / tc2),
+            "calc(calc(5s + 500ms) / calc(25% * 2))"
+        );
+    }
+
+    #[test]
+    fn test_composition_number() {
+        let num = 2.0;
+
+        let lc1 = Length::Vw(100.) + Length::In(2.5);
+        let lc2 = Length::Percent(25.) * num;
+        assert_eq!(
+            format!("{}", lc1 + lc2),
+            "calc(calc(100vw + 2.5in) + calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", lc1 - lc2),
+            "calc(calc(100vw + 2.5in) - calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", lc1 * lc2),
+            "calc(calc(100vw + 2.5in) * calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", lc1 / lc2),
+            "calc(calc(100vw + 2.5in) / calc(25% * 2))"
+        );
+
+        let ac1 = Angle::Percent(50.) + Angle::Deg(180.);
+        let ac2 = Angle::Percent(25.) * num;
+        assert_eq!(
+            format!("{}", ac1 + ac2),
+            "calc(calc(50% + 180deg) + calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", ac1 - ac2),
+            "calc(calc(50% + 180deg) - calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", ac1 * ac2),
+            "calc(calc(50% + 180deg) * calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", ac1 / ac2),
+            "calc(calc(50% + 180deg) / calc(25% * 2))"
+        );
+
+        let rc1 = Resolution::Dpi(50.) + Resolution::Dppx(100.);
+        let rc2 = Resolution::Dpi(25.) * num;
+        assert_eq!(
+            format!("{}", rc1 + rc2),
+            "calc(calc(50dpi + 100dppx) + calc(25dpi * 2))"
+        );
+        assert_eq!(
+            format!("{}", rc1 - rc2),
+            "calc(calc(50dpi + 100dppx) - calc(25dpi * 2))"
+        );
+        assert_eq!(
+            format!("{}", rc1 * rc2),
+            "calc(calc(50dpi + 100dppx) * calc(25dpi * 2))"
+        );
+        assert_eq!(
+            format!("{}", rc1 / rc2),
+            "calc(calc(50dpi + 100dppx) / calc(25dpi * 2))"
+        );
+
+        let tc1 = Time::Seconds(5.) + Time::Milliseconds(500.);
+        let tc2 = Time::Percent(25.) * num;
+        assert_eq!(
+            format!("{}", tc1 + tc2),
+            "calc(calc(5s + 500ms) + calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", tc1 - tc2),
+            "calc(calc(5s + 500ms) - calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", tc1 * tc2),
+            "calc(calc(5s + 500ms) * calc(25% * 2))"
+        );
+        assert_eq!(
+            format!("{}", tc1 / tc2),
+            "calc(calc(5s + 500ms) / calc(25% * 2))"
         );
     }
 }

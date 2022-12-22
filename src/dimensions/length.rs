@@ -1,6 +1,6 @@
 use crate::math::{
     calculation::Operation,
-    markers::{Addable, Maxable, Minable, Scalable},
+    markers::{Addable, Calculable, Maxable, Minable, Scalable},
     Calculation, Max, Min,
 };
 
@@ -23,6 +23,7 @@ pub enum Length {
     Pt(f64),
 }
 
+impl Calculable<Length> for Length {}
 impl Addable<Length> for Length {}
 impl Scalable<Length> for Length {}
 

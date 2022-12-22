@@ -1,6 +1,6 @@
 use crate::math::{
     calculation::Operation,
-    markers::{Addable, Maxable, Minable, Scalable},
+    markers::{Addable, Calculable, Maxable, Minable, Scalable},
     Calculation, Max, Min,
 };
 
@@ -12,6 +12,7 @@ pub enum Time {
     Duration(std::time::Duration),
 }
 
+impl Calculable<Time> for Time {}
 impl Addable<Time> for Time {}
 impl Scalable<Time> for Time {}
 
