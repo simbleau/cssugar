@@ -1,21 +1,17 @@
-use crate::math::ops::{Max, Min};
+use crate::math::Function;
 use std::{fmt::Display, ops::Add, ops::Div, ops::Mul, ops::Sub};
 
 /// Able to be embedded in a calculation.
-pub trait Calculable<T>: Display + Sized {}
+pub trait Calculable<Unit>: Display + Sized {}
 
 /// Able to be added or subtracted from types with the same underlying unit.
-pub trait Addable<T>: Display + Sized + Add + Sub {}
+pub trait Addable<Unit>: Display + Sized + Add + Sub {}
 
 /// Able to be scaled from types with the same underlying unit.
-pub trait Scalable<T>: Display + Sized + Mul + Div {}
+pub trait Scalable<Unit>: Display + Sized + Mul + Div {}
 
-/// Able to be compared to yield a maximum value.
-pub trait Maxable: Display + Sized + Max {
-    type Unit;
-}
-
-/// Able to be compared to yield a minimum value.
-pub trait Minable: Display + Sized + Min {
-    type Unit;
+/// Able to be compared to yield a maximum or minimum value.
+pub trait Comparable<Unit>: Display + Sized {
+    fn min<Rhs>(self, rhs: Rhs) -> Function<Unit, Self, Rhs>;
+    fn max<Rhs>(self, rhs: Rhs) -> Function<Unit, Self, Rhs>;
 }

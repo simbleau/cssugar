@@ -1,25 +1,28 @@
 use crate::math::__markers::{Addable, Calculable, Scalable};
 use std::marker::PhantomData;
 
+// TODO: Rename to Operator
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub(crate) enum Operation {
     Add,
     Sub,
     Mul,
     Div,
+    Min,
+    Max,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Calculation<Unit, L, R> {
+pub struct Function<Unit, L, R> {
     lhs: L,
     rhs: R,
     op: Operation,
     _pd: PhantomData<Unit>,
 }
 
-impl<Unit, L, R> Calculation<Unit, L, R> {
+impl<Unit, L, R> Function<Unit, L, R> {
     pub(crate) fn new(lhs: L, rhs: R, op: Operation) -> Self {
-        Calculation {
+        Self {
             lhs,
             rhs,
             op,
@@ -28,28 +31,28 @@ impl<Unit, L, R> Calculation<Unit, L, R> {
     }
 }
 
-impl<Unit, L, R> Calculable<Unit> for Calculation<Unit, L, R>
+impl<Unit, L, R> Calculable<Unit> for Function<Unit, L, R>
 where
     L: Calculable<Unit>,
     R: Calculable<Unit>,
 {
 }
 
-impl<Unit, L, R> Addable<Unit> for Calculation<Unit, L, R>
+impl<Unit, L, R> Addable<Unit> for Function<Unit, L, R>
 where
     L: Calculable<Unit>,
     R: Calculable<Unit>,
 {
 }
 
-impl<Unit, L, R> Scalable<Unit> for Calculation<Unit, L, R>
+impl<Unit, L, R> Scalable<Unit> for Function<Unit, L, R>
 where
     L: Scalable<Unit>,
     R: Scalable<Unit>,
 {
 }
 
-impl<Unit, L, R> std::fmt::Display for Calculation<Unit, L, R>
+impl<Unit, L, R> std::fmt::Display for Function<Unit, L, R>
 where
     L: std::fmt::Display,
     R: std::fmt::Display,
@@ -57,56 +60,56 @@ where
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "calc({} {} {})",
-            self.lhs,
+            "{}",
             match self.op {
-                Operation::Add => "+",
-                Operation::Sub => "-",
-                Operation::Mul => "*",
-                Operation::Div => "/",
-            },
-            self.rhs
+                Operation::Add => format!("calc({}+{})", self.lhs, self.rhs),
+                Operation::Sub => format!("calc({}-{})", self.lhs, self.rhs),
+                Operation::Mul => format!("calc({}*{})", self.lhs, self.rhs),
+                Operation::Div => format!("calc({}/{})", self.lhs, self.rhs),
+                Operation::Min => format!("min({},{})", self.lhs, self.rhs),
+                Operation::Max => format!("max({},{})", self.lhs, self.rhs),
+            }
         )
     }
 }
 
-impl<Unit, L, R, Rhs> std::ops::Add<Rhs> for Calculation<Unit, L, R>
+impl<Unit, L, R, Rhs> std::ops::Add<Rhs> for Function<Unit, L, R>
 where
     Rhs: Addable<Unit>,
 {
-    type Output = Calculation<Unit, Self, Rhs>;
-    fn add(self, rhs: Rhs) -> Calculation<Unit, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Add)
+    type Output = Function<Unit, Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Function<Unit, Self, Rhs> {
+        Function::new(self, rhs, Operation::Add)
     }
 }
 
-impl<Unit, L, R, Rhs> std::ops::Sub<Rhs> for Calculation<Unit, L, R>
+impl<Unit, L, R, Rhs> std::ops::Sub<Rhs> for Function<Unit, L, R>
 where
     Rhs: Addable<Unit>,
 {
-    type Output = Calculation<Unit, Self, Rhs>;
-    fn sub(self, rhs: Rhs) -> Calculation<Unit, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Sub)
+    type Output = Function<Unit, Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Function<Unit, Self, Rhs> {
+        Function::new(self, rhs, Operation::Sub)
     }
 }
 
-impl<Unit, L, R, Rhs> std::ops::Mul<Rhs> for Calculation<Unit, L, R>
+impl<Unit, L, R, Rhs> std::ops::Mul<Rhs> for Function<Unit, L, R>
 where
     Rhs: Scalable<Unit>,
 {
-    type Output = Calculation<Unit, Self, Rhs>;
-    fn mul(self, rhs: Rhs) -> Calculation<Unit, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Mul)
+    type Output = Function<Unit, Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Function<Unit, Self, Rhs> {
+        Function::new(self, rhs, Operation::Mul)
     }
 }
 
-impl<Unit, L, R, Rhs> std::ops::Div<Rhs> for Calculation<Unit, L, R>
+impl<Unit, L, R, Rhs> std::ops::Div<Rhs> for Function<Unit, L, R>
 where
     Rhs: Scalable<Unit>,
 {
-    type Output = Calculation<Unit, Self, Rhs>;
-    fn div(self, rhs: Rhs) -> Calculation<Unit, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Div)
+    type Output = Function<Unit, Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Function<Unit, Self, Rhs> {
+        Function::new(self, rhs, Operation::Div)
     }
 }
 

@@ -1,26 +1,11 @@
-use crate::math::{
-    calculation::Operation,
-    markers::{Addable, Calculable, Maxable, Minable, Scalable},
-    Calculation, Max, Min,
-};
+use crate::math::function::Operation;
+use crate::math::{Addable, Calculable, Comparable, Function, Scalable};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Resolution {
     Dpi(f64),
     Dpcm(f64),
     Dppx(f64),
-}
-
-impl Calculable<Resolution> for Resolution {}
-impl Addable<Resolution> for Resolution {}
-impl Scalable<Resolution> for Resolution {}
-
-impl Maxable for Resolution {
-    type Unit = Resolution;
-}
-
-impl Minable for Resolution {
-    type Unit = Resolution;
 }
 
 impl std::fmt::Display for Resolution {
@@ -33,17 +18,17 @@ impl std::fmt::Display for Resolution {
     }
 }
 
-impl<Rhs> crate::math::ops::Max<Rhs> for Resolution {
-    type Output = Max<Self, Rhs>;
-    fn max(self, rhs: Rhs) -> Max<Self, Rhs> {
-        Max::new(self, rhs)
-    }
-}
+impl Calculable<Resolution> for Resolution {}
+impl Addable<Resolution> for Resolution {}
+impl Scalable<Resolution> for Resolution {}
 
-impl<Rhs> crate::math::ops::Min<Rhs> for Resolution {
-    type Output = Min<Self, Rhs>;
-    fn min(self, rhs: Rhs) -> Min<Self, Rhs> {
-        Min::new(self, rhs)
+impl Comparable<Resolution> for Resolution {
+    fn min<Rhs>(self, rhs: Rhs) -> Function<Resolution, Self, Rhs> {
+        Function::new(self, rhs, Operation::Min)
+    }
+
+    fn max<Rhs>(self, rhs: Rhs) -> Function<Resolution, Self, Rhs> {
+        Function::new(self, rhs, Operation::Max)
     }
 }
 
@@ -51,9 +36,9 @@ impl<Rhs> std::ops::Add<Rhs> for Resolution
 where
     Rhs: Addable<Resolution>,
 {
-    type Output = Calculation<Resolution, Self, Rhs>;
-    fn add(self, rhs: Rhs) -> Calculation<Resolution, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Add)
+    type Output = Function<Resolution, Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Function<Resolution, Self, Rhs> {
+        Function::new(self, rhs, Operation::Add)
     }
 }
 
@@ -61,9 +46,9 @@ impl<Rhs> std::ops::Sub<Rhs> for Resolution
 where
     Rhs: Addable<Resolution>,
 {
-    type Output = Calculation<Resolution, Self, Rhs>;
-    fn sub(self, rhs: Rhs) -> Calculation<Resolution, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Sub)
+    type Output = Function<Resolution, Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Function<Resolution, Self, Rhs> {
+        Function::new(self, rhs, Operation::Sub)
     }
 }
 
@@ -71,9 +56,9 @@ impl<Rhs> std::ops::Mul<Rhs> for Resolution
 where
     Rhs: Scalable<Resolution>,
 {
-    type Output = Calculation<Resolution, Self, Rhs>;
-    fn mul(self, rhs: Rhs) -> Calculation<Resolution, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Mul)
+    type Output = Function<Resolution, Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Function<Resolution, Self, Rhs> {
+        Function::new(self, rhs, Operation::Mul)
     }
 }
 
@@ -81,9 +66,9 @@ impl<Rhs> std::ops::Div<Rhs> for Resolution
 where
     Rhs: Scalable<Resolution>,
 {
-    type Output = Calculation<Resolution, Self, Rhs>;
-    fn div(self, rhs: Rhs) -> Calculation<Resolution, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Div)
+    type Output = Function<Resolution, Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Function<Resolution, Self, Rhs> {
+        Function::new(self, rhs, Operation::Div)
     }
 }
 #[cfg(test)]

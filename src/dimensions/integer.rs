@@ -1,4 +1,4 @@
-use crate::math::markers::{Calculable, Scalable};
+use crate::math::{Calculable, Scalable};
 
 impl<Unit> Scalable<Unit> for i8 {}
 impl<Unit> Scalable<Unit> for i16 {}
@@ -9,6 +9,8 @@ impl<Unit> Calculable<Unit> for i8 {}
 impl<Unit> Calculable<Unit> for i16 {}
 impl<Unit> Calculable<Unit> for i32 {}
 impl<Unit> Calculable<Unit> for i128 {}
+
+// TODO: Implement usize, isize
 
 #[cfg(test)]
 mod tests {

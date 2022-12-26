@@ -5,5 +5,5 @@ pub mod math;
 pub mod prelude {
     pub use crate::colors::*;
     pub use crate::dimensions::*;
-    pub use crate::math::ops::*;
+    pub use crate::math::*;
 }

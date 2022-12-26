@@ -1,4 +1,4 @@
-use crate::math::markers::{Calculable, Scalable};
+use crate::math::{Calculable, Scalable};
 
 impl<Unit> Scalable<Unit> for f32 {}
 impl<Unit> Scalable<Unit> for f64 {}

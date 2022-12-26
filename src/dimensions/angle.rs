@@ -1,8 +1,5 @@
-use crate::math::{
-    calculation::Operation,
-    markers::{Addable, Calculable, Maxable, Minable, Scalable},
-    Calculation, Max, Min,
-};
+use crate::math::function::Operation;
+use crate::math::{Addable, Calculable, Comparable, Function, Scalable};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Angle {
@@ -11,18 +8,6 @@ pub enum Angle {
     Rad(f64),
     Turn(f64),
     Percent(f64),
-}
-
-impl Calculable<Angle> for Angle {}
-impl Addable<Angle> for Angle {}
-impl Scalable<Angle> for Angle {}
-
-impl Maxable for Angle {
-    type Unit = Angle;
-}
-
-impl Minable for Angle {
-    type Unit = Angle;
 }
 
 impl std::fmt::Display for Angle {
@@ -37,17 +22,17 @@ impl std::fmt::Display for Angle {
     }
 }
 
-impl<Rhs> crate::math::ops::Max<Rhs> for Angle {
-    type Output = Max<Self, Rhs>;
-    fn max(self, rhs: Rhs) -> Max<Self, Rhs> {
-        Max::new(self, rhs)
-    }
-}
+impl Calculable<Angle> for Angle {}
+impl Addable<Angle> for Angle {}
+impl Scalable<Angle> for Angle {}
 
-impl<Rhs> crate::math::ops::Min<Rhs> for Angle {
-    type Output = Min<Self, Rhs>;
-    fn min(self, rhs: Rhs) -> Min<Self, Rhs> {
-        Min::new(self, rhs)
+impl Comparable<Angle> for Angle {
+    fn min<Rhs>(self, rhs: Rhs) -> Function<Angle, Self, Rhs> {
+        Function::new(self, rhs, Operation::Min)
+    }
+
+    fn max<Rhs>(self, rhs: Rhs) -> Function<Angle, Self, Rhs> {
+        Function::new(self, rhs, Operation::Max)
     }
 }
 
@@ -55,9 +40,9 @@ impl<Rhs> std::ops::Add<Rhs> for Angle
 where
     Rhs: Addable<Angle>,
 {
-    type Output = Calculation<Angle, Self, Rhs>;
-    fn add(self, rhs: Rhs) -> Calculation<Angle, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Add)
+    type Output = Function<Angle, Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Function<Angle, Self, Rhs> {
+        Function::new(self, rhs, Operation::Add)
     }
 }
 
@@ -65,9 +50,9 @@ impl<Rhs> std::ops::Sub<Rhs> for Angle
 where
     Rhs: Addable<Angle>,
 {
-    type Output = Calculation<Angle, Self, Rhs>;
-    fn sub(self, rhs: Rhs) -> Calculation<Angle, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Sub)
+    type Output = Function<Angle, Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Function<Angle, Self, Rhs> {
+        Function::new(self, rhs, Operation::Sub)
     }
 }
 
@@ -75,9 +60,9 @@ impl<Rhs> std::ops::Mul<Rhs> for Angle
 where
     Rhs: Scalable<Angle>,
 {
-    type Output = Calculation<Angle, Self, Rhs>;
-    fn mul(self, rhs: Rhs) -> Calculation<Angle, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Mul)
+    type Output = Function<Angle, Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Function<Angle, Self, Rhs> {
+        Function::new(self, rhs, Operation::Mul)
     }
 }
 
@@ -85,9 +70,9 @@ impl<Rhs> std::ops::Div<Rhs> for Angle
 where
     Rhs: Scalable<Angle>,
 {
-    type Output = Calculation<Angle, Self, Rhs>;
-    fn div(self, rhs: Rhs) -> Calculation<Angle, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Div)
+    type Output = Function<Angle, Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Function<Angle, Self, Rhs> {
+        Function::new(self, rhs, Operation::Div)
     }
 }
 

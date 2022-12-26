@@ -1,8 +1,5 @@
-use crate::math::{
-    calculation::Operation,
-    markers::{Addable, Calculable, Maxable, Minable, Scalable},
-    Calculation, Max, Min,
-};
+use crate::math::function::Operation;
+use crate::math::{Addable, Calculable, Comparable, Function, Scalable};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Length {
@@ -21,18 +18,6 @@ pub enum Length {
     Mm(f64),
     In(f64),
     Pt(f64),
-}
-
-impl Calculable<Length> for Length {}
-impl Addable<Length> for Length {}
-impl Scalable<Length> for Length {}
-
-impl Maxable for Length {
-    type Unit = Length;
-}
-
-impl Minable for Length {
-    type Unit = Length;
 }
 
 impl std::fmt::Display for Length {
@@ -55,17 +40,17 @@ impl std::fmt::Display for Length {
     }
 }
 
-impl<Rhs> crate::math::ops::Max<Rhs> for Length {
-    type Output = Max<Self, Rhs>;
-    fn max(self, rhs: Rhs) -> Max<Self, Rhs> {
-        Max::new(self, rhs)
-    }
-}
+impl Calculable<Length> for Length {}
+impl Addable<Length> for Length {}
+impl Scalable<Length> for Length {}
 
-impl<Rhs> crate::math::ops::Min<Rhs> for Length {
-    type Output = Min<Self, Rhs>;
-    fn min(self, rhs: Rhs) -> Min<Self, Rhs> {
-        Min::new(self, rhs)
+impl Comparable<Length> for Length {
+    fn min<Rhs>(self, rhs: Rhs) -> Function<Length, Self, Rhs> {
+        Function::new(self, rhs, Operation::Min)
+    }
+
+    fn max<Rhs>(self, rhs: Rhs) -> Function<Length, Self, Rhs> {
+        Function::new(self, rhs, Operation::Max)
     }
 }
 
@@ -73,9 +58,9 @@ impl<Rhs> std::ops::Add<Rhs> for Length
 where
     Rhs: Addable<Length>,
 {
-    type Output = Calculation<Length, Self, Rhs>;
-    fn add(self, rhs: Rhs) -> Calculation<Length, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Add)
+    type Output = Function<Length, Self, Rhs>;
+    fn add(self, rhs: Rhs) -> Function<Length, Self, Rhs> {
+        Function::new(self, rhs, Operation::Add)
     }
 }
 
@@ -83,9 +68,9 @@ impl<Rhs> std::ops::Sub<Rhs> for Length
 where
     Rhs: Addable<Length>,
 {
-    type Output = Calculation<Length, Self, Rhs>;
-    fn sub(self, rhs: Rhs) -> Calculation<Length, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Sub)
+    type Output = Function<Length, Self, Rhs>;
+    fn sub(self, rhs: Rhs) -> Function<Length, Self, Rhs> {
+        Function::new(self, rhs, Operation::Sub)
     }
 }
 
@@ -93,9 +78,9 @@ impl<Rhs> std::ops::Mul<Rhs> for Length
 where
     Rhs: Scalable<Length>,
 {
-    type Output = Calculation<Length, Self, Rhs>;
-    fn mul(self, rhs: Rhs) -> Calculation<Length, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Mul)
+    type Output = Function<Length, Self, Rhs>;
+    fn mul(self, rhs: Rhs) -> Function<Length, Self, Rhs> {
+        Function::new(self, rhs, Operation::Mul)
     }
 }
 
@@ -103,9 +88,9 @@ impl<Rhs> std::ops::Div<Rhs> for Length
 where
     Rhs: Scalable<Length>,
 {
-    type Output = Calculation<Length, Self, Rhs>;
-    fn div(self, rhs: Rhs) -> Calculation<Length, Self, Rhs> {
-        Calculation::new(self, rhs, Operation::Div)
+    type Output = Function<Length, Self, Rhs>;
+    fn div(self, rhs: Rhs) -> Function<Length, Self, Rhs> {
+        Function::new(self, rhs, Operation::Div)
     }
 }
 
