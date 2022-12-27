@@ -76,26 +76,44 @@ mod tests {
     use crate::prelude::*;
 
     #[test]
-    fn test_calc() {
-        let r1 = Resolution::Dpi(100.);
-        let r2 = Resolution::Dpcm(50.);
-        assert_eq!(format!("{}", r1 + r2), "calc(100dpi + 50dpcm)");
-        assert_eq!(format!("{}", r1 - r2), "calc(100dpi - 50dpcm)");
-        assert_eq!(format!("{}", r1 * r2), "calc(100dpi * 50dpcm)");
-        assert_eq!(format!("{}", r1 / r2), "calc(100dpi / 50dpcm)");
+    fn test_add() {
+        let r1 = Resolution::Dpi(50.0);
+        let r2 = Resolution::Dppx(25.0);
+        assert_eq!(format!("{}", r1 + r2), "calc(50dpi+25dppx)");
+    }
+
+    #[test]
+    fn test_sub() {
+        let r1 = Resolution::Dpi(50.0);
+        let r2 = Resolution::Dppx(25.0);
+        assert_eq!(format!("{}", r1 - r2), "calc(50dpi-25dppx)");
+    }
+
+    #[test]
+    fn test_mul() {
+        let r1 = Resolution::Dpi(50.0);
+        let r2 = Resolution::Dppx(25.0);
+        assert_eq!(format!("{}", r1 * r2), "calc(50dpi*25dppx)");
+    }
+
+    #[test]
+    fn test_div() {
+        let r1 = Resolution::Dpi(50.0);
+        let r2 = Resolution::Dppx(25.0);
+        assert_eq!(format!("{}", r1 / r2), "calc(50dpi/25dppx)");
     }
 
     #[test]
     fn test_max() {
-        let r1 = Resolution::Dpi(100.);
-        let r2 = Resolution::Dpcm(50.);
-        assert_eq!(format!("{}", r1.max(r2)), "max(100dpi, 50dpcm)");
+        let r1 = Resolution::Dpi(50.0);
+        let r2 = Resolution::Dppx(25.0);
+        assert_eq!(format!("{}", r1.max(r2)), "max(50dpi,25dppx)");
     }
 
     #[test]
     fn test_min() {
-        let r1 = Resolution::Dpi(100.);
-        let r2 = Resolution::Dpcm(50.);
-        assert_eq!(format!("{}", r1.min(r2)), "min(100dpi, 50dpcm)");
+        let r1 = Resolution::Dpi(50.0);
+        let r2 = Resolution::Dppx(25.0);
+        assert_eq!(format!("{}", r1.min(r2)), "min(50dpi,25dppx)");
     }
 }

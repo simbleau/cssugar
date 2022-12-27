@@ -99,26 +99,44 @@ mod tests {
     use crate::prelude::*;
 
     #[test]
-    fn test_calc() {
-        let l1 = Length::Vw(100.);
-        let l2 = Length::Px(300.);
-        assert_eq!(format!("{}", l1 + l2), "calc(100vw + 300px)");
-        assert_eq!(format!("{}", l1 - l2), "calc(100vw - 300px)");
-        assert_eq!(format!("{}", l1 * l2), "calc(100vw * 300px)");
-        assert_eq!(format!("{}", l1 / l2), "calc(100vw / 300px)");
+    fn test_add() {
+        let l1 = Length::Px(100.);
+        let l2 = Length::Percent(500.);
+        assert_eq!(format!("{}", l1 + l2), "calc(100px+500%)");
+    }
+
+    #[test]
+    fn test_sub() {
+        let l1 = Length::Px(100.);
+        let l2 = Length::Percent(500.);
+        assert_eq!(format!("{}", l1 - l2), "calc(100px-500%)");
+    }
+
+    #[test]
+    fn test_mul() {
+        let l1 = Length::Px(100.);
+        let l2 = Length::Percent(500.);
+        assert_eq!(format!("{}", l1 * l2), "calc(100px*500%)");
+    }
+
+    #[test]
+    fn test_div() {
+        let l1 = Length::Px(100.);
+        let l2 = Length::Percent(500.);
+        assert_eq!(format!("{}", l1 / l2), "calc(100px/500%)");
     }
 
     #[test]
     fn test_max() {
-        let l1 = Length::Vw(100.);
-        let l2 = Length::Px(300.);
-        assert_eq!(format!("{}", l1.max(l2)), "max(100vw, 300px)");
+        let l1 = Length::Px(100.);
+        let l2 = Length::Percent(500.);
+        assert_eq!(format!("{}", l1.max(l2)), "max(100px,500%)");
     }
 
     #[test]
     fn test_min() {
-        let l1 = Length::Vw(100.);
-        let l2 = Length::Px(300.);
-        assert_eq!(format!("{}", l1.min(l2)), "min(100vw, 300px)");
+        let l1 = Length::Px(100.);
+        let l2 = Length::Percent(500.);
+        assert_eq!(format!("{}", l1.min(l2)), "min(100px,500%)");
     }
 }
