@@ -119,4 +119,14 @@ mod tests {
         let t2 = Time::Milliseconds(500.);
         assert_eq!(format!("{}", t1.min(t2)), "min(100s,500ms)");
     }
+
+    #[test]
+    fn test_calc() {
+        let a1 = Time::Seconds(100.0);
+        let a2 = Time::Milliseconds(100.) + Time::Percent(30.);
+        assert_eq!(format!("{}", a1 + a2), "calc(100s+calc(100ms+30%))");
+        assert_eq!(format!("{}", a1 - a2), "calc(100s-calc(100ms+30%))");
+        assert_eq!(format!("{}", a1 * a2), "calc(100s*calc(100ms+30%))");
+        assert_eq!(format!("{}", a1 / a2), "calc(100s/calc(100ms+30%))");
+    }
 }

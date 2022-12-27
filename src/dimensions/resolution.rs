@@ -116,4 +116,14 @@ mod tests {
         let r2 = Resolution::Dppx(25.0);
         assert_eq!(format!("{}", r1.min(r2)), "min(50dpi,25dppx)");
     }
+
+    #[test]
+    fn test_calc() {
+        let a1 = Resolution::Dpi(100.0);
+        let a2 = Resolution::Dppx(100.) + Resolution::Dpcm(30.);
+        assert_eq!(format!("{}", a1 + a2), "calc(100dpi+calc(100dppx+30dpcm))");
+        assert_eq!(format!("{}", a1 - a2), "calc(100dpi-calc(100dppx+30dpcm))");
+        assert_eq!(format!("{}", a1 * a2), "calc(100dpi*calc(100dppx+30dpcm))");
+        assert_eq!(format!("{}", a1 / a2), "calc(100dpi/calc(100dppx+30dpcm))");
+    }
 }

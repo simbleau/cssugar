@@ -139,4 +139,14 @@ mod tests {
         let l2 = Length::Percent(500.);
         assert_eq!(format!("{}", l1.min(l2)), "min(100px,500%)");
     }
+
+    #[test]
+    fn test_calc() {
+        let l1 = Length::Vw(100.);
+        let l2 = Length::Vw(100.) + Length::Px(300.);
+        assert_eq!(format!("{}", l1 + l2), "calc(100vw+calc(100vw+300px))");
+        assert_eq!(format!("{}", l1 - l2), "calc(100vw-calc(100vw+300px))");
+        assert_eq!(format!("{}", l1 * l2), "calc(100vw*calc(100vw+300px))");
+        assert_eq!(format!("{}", l1 / l2), "calc(100vw/calc(100vw+300px))");
+    }
 }
