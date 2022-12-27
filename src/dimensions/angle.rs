@@ -84,51 +84,51 @@ mod tests {
     fn test_add() {
         let a1 = Angle::Rad(100.);
         let a2 = Angle::Percent(500.);
-        assert_eq!(format!("{}", a1 + a2), "calc(100rad+500%)");
+        assert_eq!(format!("{}", a1 + a2), "calc(100rad + 500%)");
     }
 
     #[test]
     fn test_sub() {
         let a1 = Angle::Rad(100.);
         let a2 = Angle::Percent(500.);
-        assert_eq!(format!("{}", a1 - a2), "calc(100rad-500%)");
+        assert_eq!(format!("{}", a1 - a2), "calc(100rad - 500%)");
     }
 
     #[test]
     fn test_mul() {
         let a1 = Angle::Rad(100.);
         let a2 = Angle::Percent(500.);
-        assert_eq!(format!("{}", a1 * a2), "calc(100rad*500%)");
+        assert_eq!(format!("{}", a1 * a2), "calc(100rad * 500%)");
     }
 
     #[test]
     fn test_div() {
         let a1 = Angle::Rad(100.);
         let a2 = Angle::Percent(500.);
-        assert_eq!(format!("{}", a1 / a2), "calc(100rad/500%)");
+        assert_eq!(format!("{}", a1 / a2), "calc(100rad / 500%)");
     }
 
     #[test]
     fn test_max() {
         let a1 = Angle::Rad(100.);
         let a2 = Angle::Percent(500.);
-        assert_eq!(format!("{}", a1.max(a2)), "max(100rad,500%)");
+        assert_eq!(format!("{}", a1.max(a2)), "max(100rad, 500%)");
     }
 
     #[test]
     fn test_min() {
         let a1 = Angle::Rad(100.);
         let a2 = Angle::Percent(500.);
-        assert_eq!(format!("{}", a1.min(a2)), "min(100rad,500%)");
+        assert_eq!(format!("{}", a1.min(a2)), "min(100rad, 500%)");
     }
 
     #[test]
     fn test_calc() {
         let a1 = Angle::Rad(100.);
         let a2 = Angle::Rad(100.) + Angle::Percent(30.);
-        assert_eq!(format!("{}", a1 + a2), "calc(100rad+calc(100rad+30%))");
-        assert_eq!(format!("{}", a1 - a2), "calc(100rad-calc(100rad+30%))");
-        assert_eq!(format!("{}", a1 * a2), "calc(100rad*calc(100rad+30%))");
-        assert_eq!(format!("{}", a1 / a2), "calc(100rad/calc(100rad+30%))");
+        assert_eq!(format!("{}", a1 + a2), "calc(100rad + calc(100rad + 30%))");
+        assert_eq!(format!("{}", a1 - a2), "calc(100rad - calc(100rad + 30%))");
+        assert_eq!(format!("{}", a1 * a2), "calc(100rad * calc(100rad + 30%))");
+        assert_eq!(format!("{}", a1 / a2), "calc(100rad / calc(100rad + 30%))");
     }
 }

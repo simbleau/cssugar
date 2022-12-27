@@ -79,51 +79,63 @@ mod tests {
     fn test_add() {
         let r1 = Resolution::Dpi(50.0);
         let r2 = Resolution::Dppx(25.0);
-        assert_eq!(format!("{}", r1 + r2), "calc(50dpi+25dppx)");
+        assert_eq!(format!("{}", r1 + r2), "calc(50dpi + 25dppx)");
     }
 
     #[test]
     fn test_sub() {
         let r1 = Resolution::Dpi(50.0);
         let r2 = Resolution::Dppx(25.0);
-        assert_eq!(format!("{}", r1 - r2), "calc(50dpi-25dppx)");
+        assert_eq!(format!("{}", r1 - r2), "calc(50dpi - 25dppx)");
     }
 
     #[test]
     fn test_mul() {
         let r1 = Resolution::Dpi(50.0);
         let r2 = Resolution::Dppx(25.0);
-        assert_eq!(format!("{}", r1 * r2), "calc(50dpi*25dppx)");
+        assert_eq!(format!("{}", r1 * r2), "calc(50dpi * 25dppx)");
     }
 
     #[test]
     fn test_div() {
         let r1 = Resolution::Dpi(50.0);
         let r2 = Resolution::Dppx(25.0);
-        assert_eq!(format!("{}", r1 / r2), "calc(50dpi/25dppx)");
+        assert_eq!(format!("{}", r1 / r2), "calc(50dpi / 25dppx)");
     }
 
     #[test]
     fn test_max() {
         let r1 = Resolution::Dpi(50.0);
         let r2 = Resolution::Dppx(25.0);
-        assert_eq!(format!("{}", r1.max(r2)), "max(50dpi,25dppx)");
+        assert_eq!(format!("{}", r1.max(r2)), "max(50dpi, 25dppx)");
     }
 
     #[test]
     fn test_min() {
         let r1 = Resolution::Dpi(50.0);
         let r2 = Resolution::Dppx(25.0);
-        assert_eq!(format!("{}", r1.min(r2)), "min(50dpi,25dppx)");
+        assert_eq!(format!("{}", r1.min(r2)), "min(50dpi, 25dppx)");
     }
 
     #[test]
     fn test_calc() {
         let a1 = Resolution::Dpi(100.0);
         let a2 = Resolution::Dppx(100.) + Resolution::Dpcm(30.);
-        assert_eq!(format!("{}", a1 + a2), "calc(100dpi+calc(100dppx+30dpcm))");
-        assert_eq!(format!("{}", a1 - a2), "calc(100dpi-calc(100dppx+30dpcm))");
-        assert_eq!(format!("{}", a1 * a2), "calc(100dpi*calc(100dppx+30dpcm))");
-        assert_eq!(format!("{}", a1 / a2), "calc(100dpi/calc(100dppx+30dpcm))");
+        assert_eq!(
+            format!("{}", a1 + a2),
+            "calc(100dpi + calc(100dppx + 30dpcm))"
+        );
+        assert_eq!(
+            format!("{}", a1 - a2),
+            "calc(100dpi - calc(100dppx + 30dpcm))"
+        );
+        assert_eq!(
+            format!("{}", a1 * a2),
+            "calc(100dpi * calc(100dppx + 30dpcm))"
+        );
+        assert_eq!(
+            format!("{}", a1 / a2),
+            "calc(100dpi / calc(100dppx + 30dpcm))"
+        );
     }
 }

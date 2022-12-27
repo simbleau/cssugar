@@ -82,51 +82,51 @@ mod tests {
     fn test_add() {
         let t1 = Time::Seconds(100.);
         let t2 = Time::Milliseconds(500.);
-        assert_eq!(format!("{}", t1 + t2), "calc(100s+500ms)");
+        assert_eq!(format!("{}", t1 + t2), "calc(100s + 500ms)");
     }
 
     #[test]
     fn test_sub() {
         let t1 = Time::Seconds(100.);
         let t2 = Time::Milliseconds(500.);
-        assert_eq!(format!("{}", t1 - t2), "calc(100s-500ms)");
+        assert_eq!(format!("{}", t1 - t2), "calc(100s - 500ms)");
     }
 
     #[test]
     fn test_mul() {
         let t1 = Time::Seconds(100.);
         let t2 = Time::Milliseconds(500.);
-        assert_eq!(format!("{}", t1 * t2), "calc(100s*500ms)");
+        assert_eq!(format!("{}", t1 * t2), "calc(100s * 500ms)");
     }
 
     #[test]
     fn test_div() {
         let t1 = Time::Seconds(100.);
         let t2 = Time::Milliseconds(500.);
-        assert_eq!(format!("{}", t1 / t2), "calc(100s/500ms)");
+        assert_eq!(format!("{}", t1 / t2), "calc(100s / 500ms)");
     }
 
     #[test]
     fn test_max() {
         let t1 = Time::Seconds(100.);
         let t2 = Time::Milliseconds(500.);
-        assert_eq!(format!("{}", t1.max(t2)), "max(100s,500ms)");
+        assert_eq!(format!("{}", t1.max(t2)), "max(100s, 500ms)");
     }
 
     #[test]
     fn test_min() {
         let t1 = Time::Seconds(100.);
         let t2 = Time::Milliseconds(500.);
-        assert_eq!(format!("{}", t1.min(t2)), "min(100s,500ms)");
+        assert_eq!(format!("{}", t1.min(t2)), "min(100s, 500ms)");
     }
 
     #[test]
     fn test_calc() {
         let a1 = Time::Seconds(100.0);
         let a2 = Time::Milliseconds(100.) + Time::Percent(30.);
-        assert_eq!(format!("{}", a1 + a2), "calc(100s+calc(100ms+30%))");
-        assert_eq!(format!("{}", a1 - a2), "calc(100s-calc(100ms+30%))");
-        assert_eq!(format!("{}", a1 * a2), "calc(100s*calc(100ms+30%))");
-        assert_eq!(format!("{}", a1 / a2), "calc(100s/calc(100ms+30%))");
+        assert_eq!(format!("{}", a1 + a2), "calc(100s + calc(100ms + 30%))");
+        assert_eq!(format!("{}", a1 - a2), "calc(100s - calc(100ms + 30%))");
+        assert_eq!(format!("{}", a1 * a2), "calc(100s * calc(100ms + 30%))");
+        assert_eq!(format!("{}", a1 / a2), "calc(100s / calc(100ms + 30%))");
     }
 }

@@ -40,12 +40,12 @@ where
             f,
             "{}",
             match self.op {
-                Operation::Add => format!("calc({}+{})", self.lhs, self.rhs),
-                Operation::Sub => format!("calc({}-{})", self.lhs, self.rhs),
-                Operation::Mul => format!("calc({}*{})", self.lhs, self.rhs),
-                Operation::Div => format!("calc({}/{})", self.lhs, self.rhs),
-                Operation::Min => format!("min({},{})", self.lhs, self.rhs),
-                Operation::Max => format!("max({},{})", self.lhs, self.rhs),
+                Operation::Add => format!("calc({} + {})", self.lhs, self.rhs),
+                Operation::Sub => format!("calc({} - {})", self.lhs, self.rhs),
+                Operation::Mul => format!("calc({} * {})", self.lhs, self.rhs),
+                Operation::Div => format!("calc({} / {})", self.lhs, self.rhs),
+                Operation::Min => format!("min({}, {})", self.lhs, self.rhs),
+                Operation::Max => format!("max({}, {})", self.lhs, self.rhs),
             }
         )
     }
@@ -134,24 +134,30 @@ mod tests {
     fn test_level1() {
         let l1 = Length::Vw(100.);
         let l2 = Length::Vw(100.);
-        assert_eq!(format!("{}", l1 + l2), "calc(100vw+100vw)");
-        assert_eq!(format!("{}", l1 - l2), "calc(100vw-100vw)");
-        assert_eq!(format!("{}", l1 * l2), "calc(100vw*100vw)");
-        assert_eq!(format!("{}", l1 / l2), "calc(100vw/100vw)");
-        assert_eq!(format!("{}", l1.min(l2)), "min(100vw,100vw)");
-        assert_eq!(format!("{}", l1.max(l2)), "max(100vw,100vw)");
+        assert_eq!(format!("{}", l1 + l2), "calc(100vw + 100vw)");
+        assert_eq!(format!("{}", l1 - l2), "calc(100vw - 100vw)");
+        assert_eq!(format!("{}", l1 * l2), "calc(100vw * 100vw)");
+        assert_eq!(format!("{}", l1 / l2), "calc(100vw / 100vw)");
+        assert_eq!(format!("{}", l1.min(l2)), "min(100vw, 100vw)");
+        assert_eq!(format!("{}", l1.max(l2)), "max(100vw, 100vw)");
     }
 
     #[test]
     fn test_level2() {
         let l1 = Length::Vw(100.);
         let l2 = Length::Vw(100.) + Length::Px(300.);
-        assert_eq!(format!("{}", l1 + l2), "calc(100vw+calc(100vw+300px))");
-        assert_eq!(format!("{}", l1 - l2), "calc(100vw-calc(100vw+300px))");
-        assert_eq!(format!("{}", l1 * l2), "calc(100vw*calc(100vw+300px))");
-        assert_eq!(format!("{}", l1 / l2), "calc(100vw/calc(100vw+300px))");
-        assert_eq!(format!("{}", l1.min(l2)), "min(100vw,calc(100vw+300px))");
-        assert_eq!(format!("{}", l1.max(l2)), "max(100vw,calc(100vw+300px))");
+        assert_eq!(format!("{}", l1 + l2), "calc(100vw + calc(100vw + 300px))");
+        assert_eq!(format!("{}", l1 - l2), "calc(100vw - calc(100vw + 300px))");
+        assert_eq!(format!("{}", l1 * l2), "calc(100vw * calc(100vw + 300px))");
+        assert_eq!(format!("{}", l1 / l2), "calc(100vw / calc(100vw + 300px))");
+        assert_eq!(
+            format!("{}", l1.min(l2)),
+            "min(100vw, calc(100vw + 300px))"
+        );
+        assert_eq!(
+            format!("{}", l1.max(l2)),
+            "max(100vw, calc(100vw + 300px))"
+        );
     }
 
     #[test]
@@ -160,27 +166,27 @@ mod tests {
         let l2 = Length::Vw(100.) + Length::Px(300.);
         assert_eq!(
             format!("{}", l1 + l2),
-            "calc(calc(50px+50px)+calc(100vw+300px))"
+            "calc(calc(50px + 50px) + calc(100vw + 300px))"
         );
         assert_eq!(
             format!("{}", l1 - l2),
-            "calc(calc(50px+50px)-calc(100vw+300px))"
+            "calc(calc(50px + 50px) - calc(100vw + 300px))"
         );
         assert_eq!(
             format!("{}", l1 * l2),
-            "calc(calc(50px+50px)*calc(100vw+300px))"
+            "calc(calc(50px + 50px) * calc(100vw + 300px))"
         );
         assert_eq!(
             format!("{}", l1 / l2),
-            "calc(calc(50px+50px)/calc(100vw+300px))"
+            "calc(calc(50px + 50px) / calc(100vw + 300px))"
         );
         assert_eq!(
             format!("{}", l1.min(l2)),
-            "min(calc(50px+50px),calc(100vw+300px))"
+            "min(calc(50px + 50px), calc(100vw + 300px))"
         );
         assert_eq!(
             format!("{}", l1.max(l2)),
-            "max(calc(50px+50px),calc(100vw+300px))"
+            "max(calc(50px + 50px), calc(100vw + 300px))"
         );
     }
 }
