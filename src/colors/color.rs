@@ -75,7 +75,7 @@ impl Color {
         self.r = (self.r as f32 + 255. * a).clamp(0., 255.) as u8;
         self.g = (self.g as f32 + 255. * a).clamp(0., 255.) as u8;
         self.b = (self.b as f32 + 255. * a).clamp(0., 255.) as u8;
-        self.a = self.a;
+        self.a = a;
         *self
     }
 
