@@ -6,6 +6,7 @@ pub enum Resolution {
     Dpi(f64),
     Dpcm(f64),
     Dppx(f64),
+    Unchecked(&'static str),
 }
 
 impl std::fmt::Display for Resolution {
@@ -14,6 +15,7 @@ impl std::fmt::Display for Resolution {
             Resolution::Dpi(v) => write!(f, "{}dpi", v),
             Resolution::Dpcm(v) => write!(f, "{}dpcm", v),
             Resolution::Dppx(v) => write!(f, "{}dppx", v),
+            Resolution::Unchecked(v) => write!(f, "{v}"),
         }
     }
 }
@@ -137,5 +139,12 @@ mod tests {
             format!("{}", a1 / a2),
             "calc(100dpi / calc(100dppx + 30dpcm))"
         );
+    }
+
+    #[test]
+    fn test_unchecked() {
+        let r1 = Resolution::Unchecked("50dpi");
+        let r2 = Resolution::Unchecked("25dppx");
+        assert_eq!(format!("{}", r1 + r2), "calc(50dpi + 25dppx)");
     }
 }

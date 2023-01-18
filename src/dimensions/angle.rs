@@ -8,6 +8,7 @@ pub enum Angle {
     Rad(f64),
     Turn(f64),
     Percent(f64),
+    Unchecked(&'static str),
 }
 
 impl std::fmt::Display for Angle {
@@ -18,6 +19,7 @@ impl std::fmt::Display for Angle {
             Angle::Rad(v) => write!(f, "{}rad", v),
             Angle::Turn(v) => write!(f, "{}turn", v),
             Angle::Percent(v) => write!(f, "{}%", v),
+            Angle::Unchecked(v) => write!(f, "{v}"),
         }
     }
 }
@@ -130,5 +132,12 @@ mod tests {
         assert_eq!(format!("{}", a1 - a2), "calc(100rad - calc(100rad + 30%))");
         assert_eq!(format!("{}", a1 * a2), "calc(100rad * calc(100rad + 30%))");
         assert_eq!(format!("{}", a1 / a2), "calc(100rad / calc(100rad + 30%))");
+    }
+
+    #[test]
+    fn test_unchecked() {
+        let a1 = Angle::Unchecked("100rad");
+        let a2 = Angle::Unchecked("500%");
+        assert_eq!(format!("{}", a1 + a2), "calc(100rad + 500%)");
     }
 }

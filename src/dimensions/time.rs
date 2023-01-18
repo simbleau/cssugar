@@ -7,6 +7,7 @@ pub enum Time {
     Milliseconds(f64),
     Percent(f64),
     Duration(std::time::Duration),
+    Unchecked(&'static str),
 }
 
 impl std::fmt::Display for Time {
@@ -16,6 +17,7 @@ impl std::fmt::Display for Time {
             Time::Milliseconds(v) => write!(f, "{}ms", v),
             Time::Percent(v) => write!(f, "{}%", v),
             Time::Duration(v) => write!(f, "{}ms", v.as_millis()),
+            Time::Unchecked(v) => write!(f, "{v}"),
         }
     }
 }
@@ -128,5 +130,12 @@ mod tests {
         assert_eq!(format!("{}", a1 - a2), "calc(100s - calc(100ms + 30%))");
         assert_eq!(format!("{}", a1 * a2), "calc(100s * calc(100ms + 30%))");
         assert_eq!(format!("{}", a1 / a2), "calc(100s / calc(100ms + 30%))");
+    }
+
+    #[test]
+    fn test_unchecked() {
+        let t1 = Time::Unchecked("100s");
+        let t2 = Time::Unchecked("500ms");
+        assert_eq!(format!("{}", t1 + t2), "calc(100s + 500ms)");
     }
 }

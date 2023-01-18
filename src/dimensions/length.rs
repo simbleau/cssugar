@@ -18,6 +18,8 @@ pub enum Length {
     Mm(f64),
     In(f64),
     Pt(f64),
+    // Other
+    Unchecked(&'static str),
 }
 
 impl std::fmt::Display for Length {
@@ -36,6 +38,7 @@ impl std::fmt::Display for Length {
             Length::Mm(v) => write!(f, "{}mm", v),
             Length::In(v) => write!(f, "{}in", v),
             Length::Pt(v) => write!(f, "{}pt", v),
+            Length::Unchecked(v) => write!(f, "{v}"),
         }
     }
 }
@@ -148,5 +151,12 @@ mod tests {
         assert_eq!(format!("{}", l1 - l2), "calc(100vw - calc(100vw + 300px))");
         assert_eq!(format!("{}", l1 * l2), "calc(100vw * calc(100vw + 300px))");
         assert_eq!(format!("{}", l1 / l2), "calc(100vw / calc(100vw + 300px))");
+    }
+
+    #[test]
+    fn test_unchecked() {
+        let l1 = Length::Unchecked("100px");
+        let l2 = Length::Unchecked("500%");
+        assert_eq!(format!("{}", l1 + l2), "calc(100px + 500%)");
     }
 }
